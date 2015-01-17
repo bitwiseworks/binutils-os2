@@ -201,6 +201,10 @@ typedef struct ld_emulation_xfer_struct {
   void (*extra_map_file_text)
     (bfd *, struct bfd_link_info *, FILE *);
 
+  /* Perform final action(s) on output file
+     Note: Added by the EMX/OS2 port, so keep it at the end! */
+  void (*finish_link) (char *);
+
 } ld_emulation_xfer_type;
 
 typedef enum {

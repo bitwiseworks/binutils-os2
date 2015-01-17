@@ -30,6 +30,12 @@
 
 #include "ansidecl.h"
 
+#ifdef __EMX__ /* r=bird: hmm seen this before. */
+#ifdef TRAD_HEADER
+#include TRAD_HEADER
+#endif
+#endif /* __EMX__ */
+
 #ifdef HAVE_STDDEF_H
 #include <stddef.h>
 #endif

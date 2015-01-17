@@ -273,6 +273,8 @@ case ${generic_target} in
     esac ;;
   i386-*-nto-qnx*)			fmt=elf ;;
   i386-*-*nt*)				fmt=coff em=pe ;;
+  i386-*-os2-elf*)       		fmt=elf ;;
+  i386-*-os2*)          		fmt=aout em=emx bfd_gas=yes ;;
   i386-*-chaos)				fmt=elf ;;
   i386-*-rdos*)				fmt=elf ;;
   i386-*-darwin*)			fmt=macho ;;

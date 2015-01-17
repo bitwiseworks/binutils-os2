@@ -8398,8 +8398,16 @@ dlpreopen='$dlprefiles'
 # Directory that this library needs to be installed in:
 libdir='$install_libdir'"
 	  if test "$installed" = no && test "$need_relink" = yes; then
+            # os/2 relinking hack.
+            case $host in
+              *os2*)
+                # do nothing, no relinking.
+                ;;
+              *)
 	    $ECHO >> $output "\
 relink_command=\"$relink_command\""
+                ;;
+            esac
 	  fi
 	done
       }

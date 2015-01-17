@@ -50,6 +50,9 @@ extern unsigned long i386_mach (void);
 #ifdef TE_DYNIX
 #define AOUT_TARGET_FORMAT	"a.out-i386-dynix"
 #endif
+#ifdef TE_EMX
+#define AOUT_TARGET_FORMAT	"a.out-emx"
+#endif
 #ifndef AOUT_TARGET_FORMAT
 #define AOUT_TARGET_FORMAT	"a.out-i386"
 #endif

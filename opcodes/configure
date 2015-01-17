@@ -10593,6 +10593,10 @@ os2*)
   shlibpath_var=LIBPATH
   ;;
 
+os2*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
 osf3* | osf4* | osf5*)
   version_type=osf
   need_lib_prefix=no
@@ -12462,6 +12466,11 @@ if test "$enable_shared" = "yes"; then
      SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib ${SHARED_LIBADD}"
      SHARED_DEPENDENCIES="../bfd/libbfd.la"
      ;;
+*-*-os2*)
+      SHARED_LDFLAGS="-no-undefined"
+      SHARED_LIBADD="-L`pwd`/../bfd -lbfd -L`pwd`/../libiberty -liberty"
+#      SHARED_LIBADD="-L`pwd`/../bfd -lbfd -L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl"
+  ;;
     *)
       case "$host_vendor" in
         hp)

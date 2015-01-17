@@ -128,6 +128,10 @@ DESCRIPTION
 #include "aout/stab_gnu.h"
 #include "aout/ar.h"
 
+#if defined(N_IMP1) && defined(N_IMP2)
+#define VALUE_N_IMP1 (0xffffffffU)
+#endif
+
 /*
 SUBSECTION
 	Relocations
@@ -258,6 +262,10 @@ EMPTY_HOWTO (-1),
 };
 
 #define TABLE_SIZE(TABLE)	(sizeof (TABLE) / sizeof (TABLE[0]))
+
+#ifndef IS_STAB
+#  define IS_STAB(flags) ((flags) & N_STAB)
+#endif
 
 reloc_howto_type *
 NAME (aout, reloc_type_lookup) (bfd *abfd, bfd_reloc_code_real_type code)
@@ -1387,7 +1395,7 @@ translate_from_native_sym_flags (bfd *abfd, aout_symbol_type *cache_ptr)
 {
   flagword visible;
 
-  if ((cache_ptr->type & N_STAB) != 0
+  if (IS_STAB(cache_ptr->type)
       || cache_ptr->type == N_FN)
     {
       asection *sec;
@@ -1546,6 +1554,27 @@ translate_from_native_sym_flags (bfd *abfd, aout_symbol_type *cache_ptr)
       cache_ptr->symbol.value -= cache_ptr->symbol.section->vma;
       cache_ptr->symbol.flags = BSF_WEAK;
       break;
+
+#if defined(N_IMP1) && defined(N_IMP2)
+    case N_IMP1 | N_EXT:
+      cache_ptr->symbol.section = bfd_abs_section_ptr;
+      cache_ptr->symbol.flags = BSF_EMX_IMPORT1;
+      break;
+
+    case N_IMP2 | N_EXT:
+      cache_ptr->symbol.section = bfd_abs_section_ptr;
+      cache_ptr->symbol.flags = BSF_EMX_IMPORT2;
+      break;
+    case N_IMP2: case N_IMP1: BFD_ASSERT (!"very bad"); break;
+#endif /* EMX: N_IMP[12] */
+
+#if defined(N_EXP)
+      case N_EXP:
+      case N_EXP | N_EXT:
+        cache_ptr->symbol.section = bfd_abs_section_ptr;
+        cache_ptr->symbol.flags = BSF_EMX_EXPORT;
+        break;
+#endif /* EMX: N_EXP */
     }
 
   return TRUE;
@@ -1588,7 +1617,21 @@ translate_to_native_sym_flags (bfd *abfd,
     }
 
   if (bfd_is_abs_section (sec))
-    sym_pointer->e_type[0] |= N_ABS;
+    {
+#if defined (N_IMP1) && defined (N_IMP2)
+      if (cache_ptr->flags & BSF_EMX_IMPORT1)
+        sym_pointer->e_type[0] |= N_IMP1;
+      else if (cache_ptr->flags & BSF_EMX_IMPORT2)
+        sym_pointer->e_type[0] |= N_IMP2;
+      else
+#endif
+#if defined(N_EXP)
+      if (cache_ptr->flags & BSF_EMX_EXPORT)
+        sym_pointer->e_type[0] |= N_EXP;
+      else
+#endif /* EMX: N_EXP */
+        sym_pointer->e_type[0] |= N_ABS;
+    }
   else if (sec == obj_textsec (abfd))
     sym_pointer->e_type[0] |= N_TEXT;
   else if (sec == obj_datasec (abfd))
@@ -1945,6 +1988,15 @@ NAME (aout, swap_std_reloc_out) (bfd *abfd,
   int r_baserel, r_jmptable, r_relative;
   asection *output_section = sym->section->output_section;
 
+  /* bird - start */
+  /* Output reloctions to weak symbols as if they were undefined externals.
+     The aoutx.h code relocates them as if they were nothing special and I can't
+     see the linker doing the right thing either when it processes it. */
+  int is_weak = g->sym_ptr_ptr
+      && *g->sym_ptr_ptr
+      && ((*g->sym_ptr_ptr)->flags & BSF_WEAK);
+  /* bird - end */
+
   PUT_WORD (abfd, g->address, natptr->r_address);
 
   r_length = g->howto->size ;	/* Size as a power of two.  */
@@ -1966,6 +2018,7 @@ NAME (aout, swap_std_reloc_out) (bfd *abfd,
   if (bfd_is_com_section (output_section)
       || bfd_is_abs_section (output_section)
       || bfd_is_und_section (output_section)
+      || is_weak                     /* bird */
       /* PR gas/3041  a.out relocs against weak symbols
 	 must be treated as if they were against externs.  */
       || (sym->flags & BSF_WEAK))
@@ -2996,7 +3049,7 @@ aout_link_add_symbols (bfd *abfd, struct bfd_link_info *info)
       int type;
       const char *name;
       bfd_vma value;
-      asection *section;
+      asection *section = NULL;
       flagword flags;
       const char *string;
 
@@ -3005,7 +3058,7 @@ aout_link_add_symbols (bfd *abfd, struct bfd_link_info *info)
       type = H_GET_8 (abfd, p->e_type);
 
       /* Ignore debugging symbols.  */
-      if ((type & N_STAB) != 0)
+      if (IS_STAB(type))
 	continue;
 
       name = strings + GET_WORD (abfd, p->e_strx);
@@ -3126,6 +3179,27 @@ aout_link_add_symbols (bfd *abfd, struct bfd_link_info *info)
 	  value -= bfd_get_section_vma (abfd, section);
 	  flags = BSF_WEAK;
 	  break;
+#if defined(N_IMP1) && defined(N_IMP2)
+	case N_IMP1 | N_EXT:
+	  section = bfd_abs_section_ptr;
+	  flags = BSF_EMX_IMPORT1;
+          /* VALUE_N_IMP1 in *ABS* means external imported symbol. This is
+             a bit unreliable, but it's the best we can do in some cases. */
+          value = VALUE_N_IMP1;
+	  break;
+	case N_IMP2 | N_EXT:
+	  section = bfd_abs_section_ptr;
+	  flags = BSF_EMX_IMPORT2;
+	  break;
+        case N_IMP2: case N_IMP1: BFD_ASSERT (!"very bad"); break;
+#endif /* EMX: N_IMP[12] */
+#if defined(N_EXP)
+	case N_EXP | N_EXT:
+	case N_EXP:
+	  section = bfd_abs_section_ptr;
+	  flags = BSF_EMX_EXPORT;
+	  break;
+#endif /* EMX: N_EXP */
 	}
 
       if (! ((*add_one_symbol)
@@ -3236,7 +3310,7 @@ aout_link_check_ar_symbols (bfd *abfd,
 	 optimization only, as we check the type more thoroughly
 	 below.  */
       if (((type & N_EXT) == 0
-	   || (type & N_STAB) != 0
+	   || IS_STAB(type)
 	   || type == N_FN)
 	  && type != N_WEAKA
 	  && type != N_WEAKT
@@ -3267,7 +3341,11 @@ aout_link_check_ar_symbols (bfd *abfd,
 	  || type == (N_DATA | N_EXT)
 	  || type == (N_BSS | N_EXT)
 	  || type == (N_ABS | N_EXT)
-	  || type == (N_INDR | N_EXT))
+	  || type == (N_INDR | N_EXT)
+#if defined(N_IMP1) && defined(N_IMP2)
+	  || type == (N_IMP1 | N_EXT)
+#endif
+         )
 	{
 	  /* This object file defines this symbol.  We must link it
 	     in.  This is true regardless of whether the current
@@ -3628,6 +3706,10 @@ aout_link_write_other_symbol (struct bfd_hash_entry *bh, void *data)
 	  type = h->root.type == bfd_link_hash_defined ? N_DATA : N_WEAKD;
 	else if (sec == obj_bsssec (output_bfd))
 	  type = h->root.type == bfd_link_hash_defined ? N_BSS : N_WEAKB;
+#if defined(N_IMP1) && defined(N_IMP2)
+        else if (h->root.u.def.value == VALUE_N_IMP1)
+          type = N_IMP1;
+#endif
 	else
 	  type = h->root.type == bfd_link_hash_defined ? N_ABS : N_WEAKA;
 	type |= N_EXT;
@@ -4036,6 +4118,11 @@ aout_link_input_section_std (struct aout_final_link_info *flaginfo,
 		 is what the native linker does.  */
 	      h = sym_hashes[r_index];
 	      if (h != NULL
+#ifdef EMX
+              /* Don't touch imported symbols */
+                  && (!bfd_is_abs_section (h->root.u.def.section)
+                      || (h->root.u.def.value != (unsigned)-1))
+#endif
 		  && (h->root.type == bfd_link_hash_defined
 		      || h->root.type == bfd_link_hash_defweak))
 		{
@@ -4921,7 +5008,7 @@ aout_link_write_symbols (struct aout_final_link_info *flaginfo, bfd *input_bfd)
 	    case strip_none:
 	      break;
 	    case strip_debugger:
-	      if ((type & N_STAB) != 0)
+	      if (IS_STAB(type))
 		skip = TRUE;
 	      break;
 	    case strip_some:
@@ -4969,7 +5056,16 @@ aout_link_write_symbols (struct aout_final_link_info *flaginfo, bfd *input_bfd)
 	      val = GET_WORD (input_bfd, sym->e_value);
 	      symsec = NULL;
 	    }
-	  else if ((type & N_STAB) != 0)
+#if defined(N_IMP1) && defined(N_IMP2)
+	  else if ((type == (N_IMP1 | N_EXT))
+                || (type == (N_IMP2 | N_EXT)))
+	    symsec = bfd_abs_section_ptr;
+#endif
+#if defined(N_EXP)
+	  else if (type == (N_EXP | N_EXT))
+	    symsec = bfd_abs_section_ptr;
+#endif /* EMX: N_EXP */
+	  else if (IS_STAB(type))
 	    {
 	      val = GET_WORD (input_bfd, sym->e_value);
 	      symsec = NULL;
@@ -5048,6 +5144,10 @@ aout_link_write_symbols (struct aout_final_link_info *flaginfo, bfd *input_bfd)
 		    type |= (hresolve->root.type == bfd_link_hash_defined
 			     ? N_BSS
 			     : N_WEAKB);
+#if defined(N_IMP1) && defined(N_IMP2)
+                  else if (hresolve->root.u.def.value == VALUE_N_IMP1)
+                    type |= N_IMP1;
+#endif
 		  else
 		    type |= (hresolve->root.type == bfd_link_hash_defined
 			     ? N_ABS
@@ -5087,7 +5187,7 @@ aout_link_write_symbols (struct aout_final_link_info *flaginfo, bfd *input_bfd)
 		case discard_sec_merge:
 		  break;
 		case discard_l:
-		  if ((type & N_STAB) == 0
+		  if (!IS_STAB(type)
 		      && bfd_is_local_label_name (input_bfd, name))
 		    skip = TRUE;
 		  break;

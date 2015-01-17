@@ -1,0 +1,11 @@
+# We don't want debugging info
+# Accomplish this by overriding CFLAGS.
+CFLAGS=-s -O2
+CXXFLAGS=-s -O2
+LDFLAGS=-s -Zcrtdll -Zexe
+
+# Override SHELL variable (which is CMD.EXE by default)
+SHELL=bash
+
+# No ranlib
+RANLIB=true

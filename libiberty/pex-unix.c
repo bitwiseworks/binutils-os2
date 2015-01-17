@@ -59,6 +59,10 @@ extern int errno;
 #include <process.h>
 #endif
 
+#ifdef __OS2__
+#  define _P_NOWAITO	3
+#endif
+
 #ifdef vfork /* Autoconf may define this to fork for us. */
 # define VFORK_STRING "fork"
 #else
@@ -119,7 +123,7 @@ to_ptr32 (char **ptr64)
 
 static pid_t pex_wait (struct pex_obj *, pid_t, int *, struct pex_time *);
 
-#ifdef HAVE_WAIT4
+#if defined(HAVE_WAIT4) && !defined(__OS2__)
 
 static pid_t
 pex_wait (struct pex_obj *obj ATTRIBUTE_UNUSED, pid_t pid, int *status,
@@ -150,7 +154,7 @@ pex_wait (struct pex_obj *obj ATTRIBUTE_UNUSED, pid_t pid, int *status,
 
 #ifdef HAVE_WAITPID
 
-#ifndef HAVE_GETRUSAGE
+#if !defined(HAVE_GETRUSAGE) 
 
 static pid_t
 pex_wait (struct pex_obj *obj ATTRIBUTE_UNUSED, pid_t pid, int *status,

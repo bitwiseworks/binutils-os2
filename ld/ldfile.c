@@ -367,6 +367,67 @@ ldfile_open_file_search (const char *arch,
 	    return TRUE;
 	}
 
+#if defined (__EMX__) /* Target feature really, but no target define to test on. */
+      /* On OS/2 we have a complex naming scheme for libraries. They may have a
+         prefix, we prefer the ones with. They may also have special suffixes
+         depending on the library type. _s.a mean static, _dll.a mean dynaminc,
+         plain .a might mean both and should be searched last.
+
+         TODO: make a ldemul_open_static_archive(). */
+      if (entry->flags.maybe_archive)
+	sprintf (string, "%s%s%s%s%s%s%s", search->name, slash,
+		 lib, entry->filename, arch,
+	 (entry->flags.dynamic && ! link_info.relocatable ? "" : "_s"),
+                 suffix);
+      else
+	sprintf (string, "%s%s%s", search->name, slash, entry->filename);
+
+      if (ldfile_try_open_bfd (string, entry))
+	{
+	  entry->filename = string;
+/*	  entry->flags.sysrooted = search->sysrooted;*/
+	  return TRUE;
+	}
+
+      if (entry->flags.maybe_archive)
+         {
+          /* without lib prefix. */
+          string = concat ( search->name, slash,
+                   entry->filename, arch,
+                   (entry->flags.dynamic && ! link_info.relocatable ? "" : "_s"),
+                   suffix,  (const char *) NULL);
+          if (ldfile_try_open_bfd (string, entry))
+    	    {
+    	      entry->filename = string;
+/*    	      entry->flags.sysrooted = search->sysrooted;*/
+    	      return TRUE;
+    	    }
+
+          /* inverse the "_s". */
+          string = concat (search->name, slash,
+                   lib, entry->filename, arch,
+                   (entry->flags.dynamic && ! link_info.relocatable ? "_s" : ""),
+                   suffix, (const char *) NULL);
+          if (ldfile_try_open_bfd (string, entry))
+    	    {
+    	      entry->filename = string;
+/*    	      entry->flags.sysrooted = search->sysrooted;*/
+    	      return TRUE;
+    	    }
+
+          /* without lib prefix and inverse "_s". */
+          string = concat ( search->name, slash,
+                   entry->filename, arch,
+                   (entry->flags.dynamic && ! link_info.relocatable ? "_s" : ""),
+                   suffix, (const char *) NULL);
+          if (ldfile_try_open_bfd (string, entry))
+    	    {
+    	      entry->filename = string;
+/*   	      entry->flags.sysrooted = search->sysrooted;*/
+    	      return TRUE;
+    	    }
+        }
+#else /* __EMX__ ^ */
       if (entry->flags.maybe_archive && !entry->flags.full_name_provided)
 	string = concat (search->name, slash, lib, entry->filename,
 			 arch, suffix, (const char *) NULL);
@@ -379,7 +440,7 @@ ldfile_open_file_search (const char *arch,
 	  entry->filename = string;
 	  return TRUE;
 	}
-
+#endif /* __EMX__ */
       free (string);
     }
 

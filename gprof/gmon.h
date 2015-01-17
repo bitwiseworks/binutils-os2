@@ -84,8 +84,13 @@
 
 /*
  * Histogram counters are unsigned shorts:
+ * For emx, histogram counters are unsigned longs.
  */
+#ifdef EMX
+#define	HISTCOUNTER unsigned long
+#else
 #define	HISTCOUNTER unsigned short
+#endif
 
 /*
  * Fraction of text space to allocate for histogram counters here, 1/2:

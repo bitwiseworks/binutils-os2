@@ -179,6 +179,11 @@ changequote([,])dnl
      SHARED_LIBADD="-Wl,`pwd`/../bfd/.libs/libbfd.dylib ${SHARED_LIBADD}"
      SHARED_DEPENDENCIES="../bfd/libbfd.la"
      ;;
+*-*-os2*)
+      SHARED_LDFLAGS="-no-undefined"
+      SHARED_LIBADD="-L`pwd`/../bfd -lbfd -L`pwd`/../libiberty -liberty"
+#      SHARED_LIBADD="-L`pwd`/../bfd -lbfd -L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl"
+  ;;
     *)
       case "$host_vendor" in
         hp)

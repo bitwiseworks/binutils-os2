@@ -306,6 +306,15 @@ CODE_FRAGMENT
 .     with this name and type in use.  BSF_OBJECT must also be set.  *}
 .#define BSF_GNU_UNIQUE		(1 << 23)
 .
+.  {* Symbol is an emx export definition.  *}
+.#define BSF_EMX_EXPORT    0x10000000
+.
+.  {* Symbol is an emx import reference.  *}
+.#define BSF_EMX_IMPORT1   0x20000000
+.
+.  {* Symbol is an emx import definition.  *}
+.#define BSF_EMX_IMPORT2   0x40000000
+.
 .  flagword flags;
 .
 .  {* A pointer to the section to which this symbol is
@@ -490,6 +499,11 @@ bfd_print_symbol_vandf (bfd *abfd, void *arg, asymbol *symbol)
 	    ? (type & BSF_GLOBAL) ? '!' : 'l'
 	    : (type & BSF_GLOBAL) ? 'g'
 	    : (type & BSF_GNU_UNIQUE) ? 'u' : ' '),
+#ifdef EMX
+	   (type & BSF_EMX_IMPORT1) ? 'e' :
+	   (type & BSF_EMX_IMPORT2) ? 'E' :
+	   (type & BSF_EMX_EXPORT) ? 'X' :
+#endif /* EMX */
 	   (type & BSF_WEAK) ? 'w' : ' ',
 	   (type & BSF_CONSTRUCTOR) ? 'C' : ' ',
 	   (type & BSF_WARNING) ? 'W' : ' ',
@@ -692,6 +706,14 @@ bfd_decode_symclass (asymbol *symbol)
     }
   if (symbol->flags & BSF_GNU_UNIQUE)
     return 'u';
+#ifdef EMX
+  if (symbol->flags & BSF_EMX_IMPORT1)
+    return 'e';
+  if (symbol->flags & BSF_EMX_IMPORT2)
+    return 'E';
+  if (symbol->flags & BSF_EMX_EXPORT)
+    return 'X';
+#endif /* EMX */
   if (!(symbol->flags & (BSF_GLOBAL | BSF_LOCAL)))
     return '?';
 

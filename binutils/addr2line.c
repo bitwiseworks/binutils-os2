@@ -303,11 +303,15 @@ translate_addresses (bfd *abfd, asection *section)
 
               if (base_names && filename != NULL)
                 {
+#if defined (__EMX__)
+              filename = _getname (filename);
+#else
                   char *h;
 
                   h = strrchr (filename, '/');
                   if (h != NULL)
                     filename = h + 1;
+#endif
                 }
 
               printf ("%s:", filename ? filename : "??");

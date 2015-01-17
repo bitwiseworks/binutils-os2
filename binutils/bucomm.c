@@ -452,7 +452,12 @@ static char *
 template_in_dir (const char *path)
 {
 #define template "stXXXXXX"
+#if defined (__EMX__)
+  char *slash = _getname (path);
+  slash = (slash == path) ? NULL : slash - 1;
+#else /* not __EMX__ */
   const char *slash = strrchr (path, '/');
+#endif /* not __EMX__ */
   char *tmpname;
   size_t len;
 

@@ -143,7 +143,7 @@ smart_rename (const char *from, const char *to, int preserve_dates ATTRIBUTE_UNU
 
   exists = lstat (to, &s) == 0;
 
-#if defined (_WIN32) && !defined (__CYGWIN32__)
+#if (defined (_WIN32) && !defined (__CYGWIN32__)) || defined (__OS2__)
   /* Win32, unlike unix, will not erase `to' in `rename(from, to)' but
      fail instead.  Also, chown is not present.  */
 

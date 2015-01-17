@@ -689,6 +689,10 @@ main (int argc, char **argv)
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);
 
+#if defined (__EMX__)
+  _wildcard (&argc, &argv);
+  _response (&argc, &argv);
+#endif /* __EMX__ */
   program_name = argv[0];
   xmalloc_set_program_name (program_name);
 #if BFD_SUPPORTS_PLUGINS

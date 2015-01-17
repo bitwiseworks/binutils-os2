@@ -22,6 +22,14 @@
 #ifndef LIBAOUT_H
 #define LIBAOUT_H
 
+/* !! NASTY HACK !! */
+#ifdef __EMX__
+#include "config.h"
+#ifdef TRAD_HEADER
+#include TRAD_HEADER
+#endif
+#endif
+
 /* We try to encapsulate the differences in the various a.out file
    variants in a few routines, and otherwise share large masses of code.
    This means we only have to fix bugs in one place, most of the time.  */
@@ -219,6 +227,15 @@ struct aout_backend_data
 struct internal_exec
 {
   long a_info;			/* Magic number and flags, packed.  */
+#ifdef EMX
+    long a_hdrofs;		/* Offset from file start to a.out header */
+#else
+/** remove me **/
+#ifdef __EMX__
+#error "error EMX is not defined!!!"
+#endif
+/** remove me **/
+#endif
   bfd_vma a_text;		/* Length of text, in bytes.  */
   bfd_vma a_data;		/* Length of data, in bytes.  */
   bfd_vma a_bss;		/* Length of uninitialized data area in mem.  */

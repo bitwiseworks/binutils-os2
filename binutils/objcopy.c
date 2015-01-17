@@ -903,7 +903,7 @@ add_specific_symbols (const char *filename, htab_t htab)
 		++ eol;
 	      finished = TRUE;
 	      break;
-
+	
 	    case 0:
 	      finished = TRUE;
 	      break;
@@ -914,7 +914,7 @@ add_specific_symbols (const char *filename, htab_t htab)
 		 loop to find the real end of the line.  */
 	      * eol = '\0';
 	      break;
-
+	
 	    default:
 	      break;
 	    }
@@ -2469,6 +2469,10 @@ copy_file (const char *input_filename, const char *output_filename,
   bfd *ibfd;
   char **obj_matching;
   char **core_matching;
+#ifdef __EMX__
+  /* Check if they're both zero so we know when to use emxbind or not. */
+  int  bothtargetsnull = (input_target == NULL && output_target == NULL);
+#endif
   off_t size = get_file_size (input_filename);
 
   if (size < 1)
@@ -2528,6 +2532,56 @@ copy_file (const char *input_filename, const char *output_filename,
       set_long_section_mode (obfd, ibfd, long_section_names);
 
       copy_archive (ibfd, obfd, output_target, force_output_target, input_arch);
+      #ifdef __EMX__
+      /*
+       * On OS/2 executables are normally pushed thru emxbind.
+       * So, if input and target format was both NULL and this was
+       * an emxbind'ed executable, then redo the emxbinding. We're
+       * a bit careful not to break anything therefore the NULL target
+       * precautions.
+       *
+       * THIS IS A HACK! It's motivation is to skip some trouble
+       * during GCC building.
+       *
+       * We really don't get everything right now, just get the
+       * "strip xgcc.exe" working good enough.
+       */
+      if (bothtargetsnull && status == 0 && !getenv("NO_STRIP_EMXBIND"))
+        {
+          FILE *child;
+          char szCmd[1024];
+          char *psz;
+          sprintf (szCmd, "emxbind.exe -i \"%s\" 2> nul", input_filename);
+          for (psz = szCmd; *psz; psz++)
+              if (*psz == '\\')  *psz = '/';
+          if ((child = popen (szCmd, "r")) != NULL)
+            {
+              if (!pclose (child))
+                {
+                  char *tmpname;
+                  char  tmpnameexe[260];
+
+                  tmpname = make_tempname (output_filename);
+                  if (!tmpname)
+			{
+			  status = 1;
+			  bfd_nonfatal_message (input_filename, NULL, NULL, NULL);
+			  return;
+			}
+
+                  strcat(strcpy(tmpnameexe, tmpname), ".exe");
+                  free(tmpname);
+
+                  sprintf(szCmd, "emxbind.exe -bq -o \"%s\" \"%s\"", tmpnameexe, output_filename);
+                  for (psz = szCmd; *psz; psz++)
+                      if (*psz == '\\')  *psz = '/';
+                  if (!system (szCmd))
+                      smart_rename (tmpnameexe, output_filename, preserve_dates);
+                  unlink (tmpnameexe);
+                }
+            }
+        }
+      #endif
     }
   else if (bfd_check_format_matches (ibfd, bfd_object, &obj_matching))
     {

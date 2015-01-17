@@ -265,6 +265,15 @@ typedef struct bfd_symbol
      with this name and type in use.  BSF_OBJECT must also be set.  */
 #define BSF_GNU_UNIQUE         (1 << 23)
 
+  /* Symbol is an emx export definition.  */
+#define BSF_EMX_EXPORT    0x10000000
+
+  /* Symbol is an emx import reference.  */
+#define BSF_EMX_IMPORT1   0x20000000
+
+  /* Symbol is an emx import definition.  */
+#define BSF_EMX_IMPORT2   0x40000000
+
   flagword flags;
 
   /* A pointer to the section to which this symbol is

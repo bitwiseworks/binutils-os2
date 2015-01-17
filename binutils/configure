@@ -10434,6 +10434,10 @@ os2*)
   shlibpath_var=LIBPATH
   ;;
 
+os2*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
 osf3* | osf4* | osf5*)
   version_type=osf
   need_lib_prefix=no
@@ -13316,7 +13320,7 @@ fi
 
 
 case "${host}" in
-*-*-msdos* | *-*-go32* | *-*-mingw32* | *-*-cygwin* | *-*-windows*)
+*-*-msdos* | *-*-go32* | *-*-mingw32* | *-*-cygwin* | *-*-windows* | *-*-os2*)
 
 $as_echo "#define USE_BINARY_FOPEN 1" >>confdefs.h
  ;;
@@ -14092,6 +14096,9 @@ do
 	sparc*-*-netware*)
 	  BUILD_NLMCONV='$(NLMCONV_PROG)$(EXEEXT)'
 	  NLMCONV_DEFS="$NLMCONV_DEFS -DNLMCONV_SPARC"
+	  ;;
+        i[3456]86-*-os2*)
+	  BUILD_WINDRES='$(WINDRES_PROG)$(EXEEXT)'
 	  ;;
 	esac
 

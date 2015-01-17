@@ -52,6 +52,13 @@ extern void *sbrk ();
 #endif
 #endif
 
+#ifdef EMX
+#undef abort
+#include <process.h>
+#include <io.h>
+#define abort()		as_abort (__FILE__, __LINE__, __PRETTY_FUNCTION__)
+#endif
+
 #ifdef USING_CGEN
 /* Perform any cgen specific initialisation for gas.  */
 extern void gas_cgen_begin (void);
@@ -127,6 +134,15 @@ char *start_sbrk;
 
 static int flag_macro_alternate;
 
+
+#ifdef __EMX__
+# include <sys/emxload.h>
+#endif
+#ifdef EMX
+static char *omf_file_name;
+int emx_omf;                    /* -Zomf */
+int emx_strip;                  /* -Zstrip */
+#endif /* EMX */
 
 #ifdef USE_EMULATIONS
 #define EMULATION_ENVIRON "AS_EMULATION"
@@ -1115,6 +1131,13 @@ main (int argc, char ** argv)
 
   int macro_strip_at;
 
+#ifdef __EMX__
+  _emxload_env ("GCCLOAD");
+  _envargs (&argc, &argv, "GASOPT");
+  _response (&argc, &argv);
+  _wildcard (&argc, &argv);
+#endif /* __EMX__ */
+
   start_time = get_run_time ();
 #ifdef HAVE_SBRK
   start_sbrk = (char *) sbrk (0);
@@ -1164,13 +1187,21 @@ main (int argc, char ** argv)
   symbol_begin ();
   frag_init ();
   subsegs_begin ();
+#ifdef EMX
+  if (emx_omf)
+    {
+      omf_file_name = out_file_name;
+      out_file_name = make_temp_file ("asXXXXXX");
+    }
+#endif /* EMX */
   read_begin ();
   input_scrub_begin ();
   expr_begin ();
 
+#ifndef __EMX__
   /* It has to be called after dump_statistics ().  */
   xatexit (close_output_file);
-
+#endif
   if (flag_print_statistics)
     xatexit (dump_statistics);
 
@@ -1297,6 +1328,31 @@ main (int argc, char ** argv)
 #ifndef NO_LISTING
   listing_print (listing_filename, argv_orig);
 #endif
+#ifdef EMX
+  close_output_file();
+#endif
+#ifdef EMX
+  if (keep_it && emx_omf)
+    {
+      int rc, i;
+      char *args[6];
+
+      i = 0;
+      args[i++] = "emxomf";
+      if (emx_strip)
+      args[i++] = "-s";
+      args[i++] = "-o";
+      args[i++] = omf_file_name;
+      args[i++] = out_file_name;
+      args[i] = NULL;
+      rc = spawnvp (P_WAIT, "emxomf.exe", args);
+      remove (out_file_name);
+      if (rc < 0)
+        as_fatal ("cannot run emxomf");
+      else if (rc > 0)
+        as_fatal ("emxomf failed");
+    }
+#endif /* EMX */
 
   input_scrub_end ();
 

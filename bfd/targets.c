@@ -638,6 +638,7 @@ extern const bfd_target i370_elf32_vec;
 extern const bfd_target i386_aout_vec;
 extern const bfd_target i386_aout_bsd_vec;
 extern const bfd_target i386_aout_dynix_vec;
+extern const bfd_target i386_aout_emx_vec;
 extern const bfd_target i386_aout_fbsd_vec;
 extern const bfd_target i386_aout_linux_vec;
 extern const bfd_target i386_aout_lynx_vec;
@@ -1057,6 +1058,7 @@ static const bfd_target * const _bfd_target_vector[] =
 #if 0
 	&i386_aout_dynix_vec,
 #endif
+	&i386_aout_emx_vec,
 	&i386_aout_fbsd_vec,
 #if 0
 	/* Since a.out files lack decent magic numbers, no way to recognize

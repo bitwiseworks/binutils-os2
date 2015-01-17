@@ -351,7 +351,11 @@ changequote([,])dnl
 changequote(,)dnl
   i[3-7]86-*-isc*)	COREFILE=trad-core.lo ;;
   i[3-7]86-*-aix*)	COREFILE=aix386-core.lo ;;
+  i[3456]86-*-os2*)
 changequote([,])dnl
+			COREFILE=trad-core.lo
+			TRAD_HEADER='"hosts/i386emx.h"'
+			;;
   i860-*-mach3* | i860-*-osf1*)
 	COREFILE=trad-core.lo
 	TRAD_HEADER='"hosts/i860mach3.h"'
@@ -573,6 +577,9 @@ changequote([,])dnl
     SHARED_LDFLAGS="-no-undefined"
     SHARED_LIBADD="-L`pwd`/../libiberty -liberty -L`pwd`/../intl -lintl -lcygwin -lkernel32"
   ;;
+  *-*-os2*)
+    SHARED_LDFLAGS="-no-undefined"
+    SHARED_LIBADD="-L`pwd`/../libiberty -liberty"
 
   # Hack to build or1k-src on OSX
   or1k*-*-darwin*)
@@ -770,6 +777,7 @@ do
     i386_aout_mach3_vec)	 tb="$tb i386mach3.lo aout32.lo" ;;
     i386_aout_nbsd_vec)		 tb="$tb i386netbsd.lo aout32.lo" ;;
     i386_aout_os9k_vec)		 tb="$tb i386os9k.lo aout32.lo" ;;
+    i386_aout_emx_vec)		 tb="$tb i386aoutemx.lo aout32.lo" ;;
     i386_coff_vec)		 tb="$tb coff-i386.lo cofflink.lo" ;;
     i386_coff_go32_vec)		 tb="$tb coff-go32.lo cofflink.lo" ;;
     i386_coff_go32stubbed_vec)	 tb="$tb coff-stgo32.lo cofflink.lo" ;;

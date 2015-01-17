@@ -2863,6 +2863,10 @@ ei386pe.c: $(srcdir)/emulparams/i386pe.sh \
 ei386pe_posix.c: $(srcdir)/emulparams/i386pe_posix.sh \
   $(srcdir)/emultempl/pe.em $(srcdir)/scripttempl/pe.sc ${GEN_DEPENDS}
 
+ei386aoutemx.c: $(srcdir)/emulparams/i386aout.sh \
+  $(srcdir)/emultempl/i386aoutemx.em $(srcdir)/scripttempl/i386aoutemx.sc ${GEN_DEPENDS}
+	${GENSCRIPTS} i386aoutemx "$(tdir_i386aoutemx)"
+
 ei386pep.c: $(srcdir)/emulparams/i386pep.sh \
   $(srcdir)/emultempl/pep.em $(srcdir)/scripttempl/pep.sc ${GEN_DEPENDS}
 

@@ -10,12 +10,12 @@
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; see the file COPYING3.  If not see
 # <http://www.gnu.org/licenses/>.
@@ -2251,7 +2251,7 @@ local-maintainer-clean:
 clean: do-clean local-clean
 mostlyclean: do-mostlyclean local-clean
 distclean: do-distclean local-clean local-distclean
-maintainer-clean: local-maintainer-clean do-maintainer-clean local-clean 
+maintainer-clean: local-maintainer-clean do-maintainer-clean local-clean
 maintainer-clean: local-distclean
 realclean: maintainer-clean
 
@@ -2613,7 +2613,7 @@ dir.info: do-install-info
 
 dist:
 	@echo "Building a full distribution of this tree isn't done"
-	@echo "via 'make dist'.  Check out the etc/ subdirectory" 
+	@echo "via 'make dist'.  Check out the etc/ subdirectory"
 
 etags tags: TAGS
 
@@ -17357,6 +17357,8 @@ maintainer-clean-gprof:
 maybe-configure-intl:
 @if gcc-bootstrap
 configure-intl: stage_current
+
+configure-disabled-intl:
 @endif gcc-bootstrap
 @if intl
 maybe-configure-intl: configure-intl
@@ -17586,6 +17588,8 @@ configure-stagefeedback-intl:
 .PHONY: all-intl maybe-all-intl
 maybe-all-intl:
 @if gcc-bootstrap
+
+all-disabled-intl:
 all-intl: stage_current
 @endif gcc-bootstrap
 @if intl
@@ -17858,6 +17862,8 @@ maybe-check-intl:
 maybe-check-intl: check-intl
 
 check-intl:
+
+check-disabled-intl:
 	@: $(MAKE); $(unstage)
 	@r=`${PWD_COMMAND}`; export r; \
 	s=`cd $(srcdir); ${PWD_COMMAND}`; export s; \
@@ -17873,6 +17879,8 @@ maybe-install-intl:
 maybe-install-intl: install-intl
 
 install-intl: installdirs
+
+install-disabled-intl:
 	@: $(MAKE); $(unstage)
 	@r=`${PWD_COMMAND}`; export r; \
 	s=`cd $(srcdir); ${PWD_COMMAND}`; export s; \
@@ -47875,7 +47883,7 @@ all-gdb: $(gdbnlmrequirements) $(GDB_TK)
 install-gdb: $(INSTALL_GDB_TK)
 
 # Serialization dependencies.  Host configures don't work well in parallel to
-# each other, due to contention over config.cache.  Target configures and 
+# each other, due to contention over config.cache.  Target configures and
 # build configures are similar.
 @serialization_dependencies@
 

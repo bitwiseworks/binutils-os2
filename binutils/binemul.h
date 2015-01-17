@@ -65,7 +65,6 @@ typedef struct bin_emulation_xfer_struct
 			     bfd_boolean);
   bfd_boolean (* ar_replace) (bfd **, char *, const char *, bfd_boolean);
   bfd_boolean (* ar_parse_arg) (char *);
-}
+} 
 bin_emulation_xfer_type;
-
 #endif

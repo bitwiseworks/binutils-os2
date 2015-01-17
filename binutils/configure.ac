@@ -334,6 +334,9 @@ changequote([,])dnl
 	  BUILD_WINDMC='$(WINDMC_PROG)$(EXEEXT)'
 	  BUILD_DLLWRAP='$(DLLWRAP_PROG)$(EXEEXT)'
 	  ;;
+        i[3456]86-*-os2*)
+	  BUILD_WINDRES='$(WINDRES_PROG)$(EXEEXT)'
+	  ;;
 changequote(,)dnl
 	i[3-7]86-*-interix)
 changequote([,])dnl

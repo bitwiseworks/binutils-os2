@@ -354,8 +354,10 @@ ldctor_build_sets (void)
 
 	      if (e->name != NULL)
 		minfo ("%T\n", e->name);
-	      else
+	      else if (e->section->owner != NULL)
 		minfo ("%G\n", e->section->owner, e->section, e->value);
+              else
+		minfo ("*unknown*\n");
 	    }
 
 	  /* Need SEC_KEEP for --gc-sections.  */

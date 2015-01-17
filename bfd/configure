@@ -10868,6 +10868,10 @@ os2*)
   shlibpath_var=LIBPATH
   ;;
 
+os2*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
 osf3* | osf4* | osf5*)
   version_type=osf
   need_lib_prefix=no
@@ -13734,7 +13738,7 @@ _ACEOF
 
 
 case "${host}" in
-*-*-msdos* | *-*-go32* | *-*-mingw32* | *-*-cygwin* | *-*-windows*)
+*-*-msdos* | *-*-go32* | *-*-mingw32* | *-*-cygwin* | *-*-windows* | *-*-os2*)
 
 $as_echo "#define USE_BINARY_FOPEN 1" >>confdefs.h
  ;;
@@ -14026,6 +14030,10 @@ if test "${target}" = "${host}"; then
 	;;
   i[3-7]86-*-isc*)	COREFILE=trad-core.lo ;;
   i[3-7]86-*-aix*)	COREFILE=aix386-core.lo ;;
+  i[3456]86-*-os2*)
+			COREFILE=trad-core.lo
+			TRAD_HEADER='"hosts/i386emx.h"'
+			;;
   i860-*-mach3* | i860-*-osf1*)
 	COREFILE=trad-core.lo
 	TRAD_HEADER='"hosts/i860mach3.h"'
@@ -15177,6 +15185,9 @@ if test "$enable_shared" = "yes"; then
   or1k*-*-darwin*)
     SHARED_LIBADD="-L`pwd`/../libiberty/pic -L`pwd`/../intl -liberty -lintl"
   ;;
+  *-*-os2*)
+    SHARED_LDFLAGS="-no-undefined"
+    SHARED_LIBADD="-L`pwd`/../libiberty -liberty"
   esac
 
   if test -n "$SHARED_LIBADD"; then
@@ -15368,6 +15379,7 @@ do
     i386_aout_lynx_vec)		 tb="$tb i386lynx.lo lynx-core.lo aout32.lo" ;;
     i386_aout_mach3_vec)	 tb="$tb i386mach3.lo aout32.lo" ;;
     i386_aout_nbsd_vec)		 tb="$tb i386netbsd.lo aout32.lo" ;;
+    i386_aout_emx_vec)		 tb="$tb i386aoutemx.lo aout32.lo" ;;
     i386_aout_os9k_vec)		 tb="$tb i386os9k.lo aout32.lo" ;;
     i386_coff_vec)		 tb="$tb coff-i386.lo cofflink.lo" ;;
     i386_coff_go32_vec)		 tb="$tb coff-go32.lo cofflink.lo" ;;

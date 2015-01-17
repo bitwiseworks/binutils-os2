@@ -20,6 +20,10 @@
 #ifndef hertz_h
 #define hertz_h
 
+#ifdef __EMX__
+#define HERTZ (_osmode == OS2_MODE ? 1000 : 1024)
+#endif
+
 #define	HZ_WRONG 0		/* impossible clock frequency */
 
 /*

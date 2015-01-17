@@ -11159,6 +11159,10 @@ os2*)
   shlibpath_var=LIBPATH
   ;;
 
+os2*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
 osf3* | osf4* | osf5*)
   version_type=osf
   need_lib_prefix=no
@@ -14819,6 +14823,10 @@ os2*)
   shlibpath_var=LIBPATH
   ;;
 
+os2*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
 osf3* | osf4* | osf5*)
   version_type=osf
   need_lib_prefix=no
@@ -16696,7 +16704,7 @@ fi
 
 
 case "${host}" in
-*-*-msdos* | *-*-go32* | *-*-mingw32* | *-*-cygwin* | *-*-windows*)
+*-*-msdos* | *-*-go32* | *-*-mingw32* | *-*-cygwin* | *-*-windows* | *-*-os2*)
 
 $as_echo "#define USE_BINARY_FOPEN 1" >>confdefs.h
  ;;
@@ -16932,6 +16940,7 @@ _ACEOF
   fi
 fi
 
+target_alias=$target
 for targ_alias in `echo $target_alias $enable_targets | sed 's/,/ /g'`
 do
   if test "$targ_alias" = "all"; then

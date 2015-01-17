@@ -283,6 +283,18 @@ x86_64-*-netbsd*)	targ_emul=elf_x86_64
 				        sed -e 's/netbsd/netbsdelf/'`;;
 			esac ;;
 i[3-7]86-*-netware)	targ_emul=i386nw ;;
+i[3456]86-*-os2-elf)	targ_emul=elf_i386;
+		        targ_extra_emuls="i386aoutemx i386pe";
+			tdir_elf_i386=${targ_alias};
+			tdir_i386emx=${targ_alias}aout;
+			targ_extra_ofiles="deffilep.o pe-dll.o";
+			;;
+i386-pc-os2-emx)  	targ_emul=i386aoutemx;
+			targ_extra_emuls="elf_i386 i386pe";
+			tdir_i386emx=${targ_alias};
+			tdir_elf_i386=${targ_alias}elf;
+			targ_extra_ofiles="deffilep.o pe-dll.o";
+			;;
 i[3-7]86-*-elf*)	targ_emul=elf_i386 ;;
 x86_64-*-elf*)		targ_emul=elf_x86_64
 			targ_extra_emuls="elf_i386 elf32_x86_64 elf_l1om elf_k1om"

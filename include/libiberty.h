@@ -109,7 +109,7 @@ extern int countargv (char**);
 #if defined (__GNU_LIBRARY__ ) || defined (__linux__) \
  || defined (__FreeBSD__) || defined (__OpenBSD__) || defined (__NetBSD__) \
  || defined (__CYGWIN__) || defined (__CYGWIN32__) || defined (__MINGW32__) \
- || defined (__DragonFly__) || defined (HAVE_DECL_BASENAME) 
+ || defined (__DragonFly__) || defined (__EMX__) || defined (HAVE_DECL_BASENAME) 
 extern char *basename (const char *) ATTRIBUTE_RETURNS_NONNULL ATTRIBUTE_NONNULL(1);
 #else
 /* Do not allow basename to be used if there is no prototype seen.  We

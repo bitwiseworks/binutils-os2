@@ -202,7 +202,12 @@ main (int argc, char **argv)
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);
 
+#ifdef __EMX__
+  _response (&argc, &argv);
+  program_name = _getname(argv[0]);
+#else
   program_name = argv[0];
+#endif
   xmalloc_set_program_name (program_name);
 
   START_PROGRESS (program_name, 0);
@@ -458,6 +463,10 @@ main (int argc, char **argv)
     {
       if (! bfd_close (link_info.output_bfd))
 	einfo (_("%F%B: final close failed: %E\n"), link_info.output_bfd);
+
+      /* Perform the final actions on output file
+       * (Added by the EMX/OS2 port) */
+      ldemul_finish_link (output_filename);
 
       /* If the --force-exe-suffix is enabled, and we're making an
 	 executable file and it doesn't end in .exe, copy it to one

@@ -9552,6 +9552,10 @@ const char *md_shortopts = "qn";
 #define OPTION_MBIG_OBJ (OPTION_MD_BASE + 18)
 #define OPTION_OMIT_LOCK_PREFIX (OPTION_MD_BASE + 19)
 #define OPTION_MEVEXRCIG (OPTION_MD_BASE + 20)
+#ifdef EMX
+#define OPTION_ZOMF (OPTION_MD_BASE + 21)
+#define OPTION_ZSTRIP (OPTION_MD_BASE + 22)
+#endif
 
 struct option md_longopts[] =
 {
@@ -9583,9 +9587,18 @@ struct option md_longopts[] =
 #endif
   {"momit-lock-prefix", required_argument, NULL, OPTION_OMIT_LOCK_PREFIX},
   {"mevexrcig", required_argument, NULL, OPTION_MEVEXRCIG},
+#ifdef EMX
+  {"Zomf", no_argument, NULL, OPTION_ZOMF},
+  {"Zstrip", no_argument, NULL, OPTION_ZSTRIP},
+#endif /* EMX */
   {NULL, no_argument, NULL, 0}
 };
 size_t md_longopts_size = sizeof (md_longopts);
+
+#ifdef EMX
+extern int emx_omf;
+extern int emx_strip;
+#endif /* EMX */
 
 int
 md_parse_option (int c, char *arg)
@@ -9891,6 +9904,16 @@ md_parse_option (int c, char *arg)
       else
         as_fatal (_("invalid -momit-lock-prefix= option: `%s'"), arg);
       break;
+
+#ifdef EMX
+    case OPTION_ZOMF:
+      emx_omf = 1;
+      break;
+
+    case OPTION_ZSTRIP:
+      emx_strip = 1;
+      break;
+#endif /* EMX */
 
     default:
       return 0;

@@ -6,12 +6,12 @@
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 3 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston,
@@ -27,7 +27,7 @@
 /* This is the layout on disk of the 32-bit or 64-bit exec header.  */
 
 #ifndef external_exec
-struct external_exec 
+struct external_exec
 {
   bfd_byte e_info[4];		    /* Magic number and stuff.  */
   bfd_byte e_text[BYTES_IN_WORD];   /* Length of text section in bytes.  */
@@ -328,7 +328,12 @@ struct internal_nlist
 #define N_WEAKD 0x10		/* Weak data symbol.  */
 #define N_WEAKB 0x11		/* Weak bss symbol.  */
 
-/* Relocations 
+/* emx-specific symbols.  */
+#define N_IMP1 0x68		/* Import reference (emx specific) */
+#define N_IMP2 0x6a		/* Import definition (emx specific) */
+#define N_EXP  0x6c             /* Export definition (emx specific) */
+
+/* Relocations
 
   There	are two types of relocation flavours for a.out systems,
   standard and extended. The standard form is used on systems where the
@@ -478,12 +483,12 @@ enum reloc_type
   RELOC_WDISP19,
   RELOC_HHI22,			/* data[0:21] = (addend + sv) >> 42     */
   RELOC_HLO10,			/* data[0:9] = (addend + sv) >> 32      */
-  
+
   /* 29K relocation types.  */
   RELOC_JUMPTARG,
   RELOC_CONST,
   RELOC_CONSTH,
-  
+
   /* All the new ones I can think of, for sparc v9.  */
   RELOC_64,			/* data[0:63] = addend + sv 		*/
   RELOC_DISP64,			/* data[0:63] = addend - pc + sv 	*/

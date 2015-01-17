@@ -2566,6 +2566,10 @@ os2*)
   shlibpath_var=LIBPATH
   ;;
 
+os2*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
 osf3* | osf4* | osf5*)
   version_type=osf
   need_lib_prefix=no

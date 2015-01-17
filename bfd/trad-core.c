@@ -53,6 +53,9 @@
 struct trad_core_struct
 {
   asection *data_section;
+#ifdef EMX
+  asection *heap_section;
+#endif /* EMX */
   asection *stack_section;
   asection *reg_section;
   struct user u;
@@ -60,6 +63,9 @@ struct trad_core_struct
 
 #define core_upage(bfd)  (&((bfd)->tdata.trad_core_data->u))
 #define core_datasec(bfd)  ((bfd)->tdata.trad_core_data->data_section)
+#ifdef EMX
+#define core_heapsec(bfd)  ((bfd)->tdata.trad_core_data->heap_section)
+#endif /* EMX */
 #define core_stacksec(bfd) ((bfd)->tdata.trad_core_data->stack_section)
 #define core_regsec(bfd)   ((bfd)->tdata.trad_core_data->reg_section)
 
@@ -95,6 +101,10 @@ trad_unix_core_file_p (bfd *abfd)
     }
 
   /* Sanity check perhaps??? */
+#ifdef EMX
+  if (u.u_magic != UMAGIC)
+    return 0;
+#else /* !EMX */
   if (u.u_dsize > 0x1000000)	/* Remember, it's in pages...  */
     {
       bfd_set_error (bfd_error_wrong_format);
@@ -139,6 +149,7 @@ trad_unix_core_file_p (bfd *abfd)
       }
 #endif
   }
+#endif /* !EMX */
 
   /* OK, we believe you.  You're a core file (sure, sure).  */
 
@@ -168,6 +179,29 @@ trad_unix_core_file_p (bfd *abfd)
 							   SEC_HAS_CONTENTS);
   if (core_regsec (abfd) == NULL)
     goto fail;
+#ifdef EMX
+  core_heapsec (abfd) = bfd_make_section_anyway (abfd, ".heap");
+  if (core_heapsec (abfd) == NULL)
+    goto fail;
+#endif /* EMX */
+
+  core_stacksec (abfd)->name = ".stack";
+  core_datasec (abfd)->name = ".data";
+#ifdef EMX
+  core_heapsec (abfd)->name = ".heap";
+#endif /* EMX */
+  core_regsec (abfd)->name = ".reg";
+
+#ifdef EMX
+  core_heapsec (abfd)->flags = SEC_ALLOC + SEC_LOAD + SEC_HAS_CONTENTS;
+#endif /* EMX */
+
+#ifdef EMX
+  core_datasec (abfd)->size =  u.u_data_end - u.u_data_base;
+  core_heapsec (abfd)->size = u.u_heap_brk - u.u_heap_base;
+  core_stacksec (abfd)->size = u.u_stack_end - u.u_stack_low;
+  core_regsec (abfd)->size = sizeof (struct user);
+#else /* not EMX */
 
   core_datasec (abfd)->size =  NBPG * u.u_dsize
 #ifdef TRAD_CORE_DSIZE_INCLUDES_TSIZE
@@ -176,9 +210,15 @@ trad_unix_core_file_p (bfd *abfd)
       ;
   core_stacksec (abfd)->size = NBPG * u.u_ssize;
   core_regsec (abfd)->size = NBPG * UPAGES; /* Larger than sizeof struct u */
+#endif /* not EMX */
 
   /* What a hack... we'd like to steal it from the exec file,
      since the upage does not seem to provide it.  FIXME.  */
+#ifdef EMX
+  core_datasec (abfd)->vma = u.u_data_base;
+  core_heapsec (abfd)->vma = u.u_heap_base;
+  core_stacksec (abfd)->vma = u.u_stack_low;
+#else /* not EMX */
 #ifdef HOST_DATA_START_ADDR
   core_datasec (abfd)->vma = HOST_DATA_START_ADDR;
 #else
@@ -190,6 +230,7 @@ trad_unix_core_file_p (bfd *abfd)
 #else
   core_stacksec (abfd)->vma = HOST_STACK_END_ADDR - (NBPG * u.u_ssize);
 #endif
+#endif /* not EMX */
 
   /* This is tricky.  As the "register section", we give them the entire
      upage and stack.  u.u_ar0 points to where "register 0" is stored.
@@ -207,17 +248,27 @@ trad_unix_core_file_p (bfd *abfd)
      using minor trickery to get around the offset-or-absolute-addr problem.  */
   core_regsec (abfd)->vma = - (bfd_vma) (unsigned long) u.u_ar0;
 
+#ifdef EMX
+  core_datasec (abfd)->filepos = u.u_data_off;
+  core_heapsec (abfd)->filepos = u.u_heap_off;
+  core_stacksec (abfd)->filepos = u.u_stack_off;
+#else /* not EMX */
   core_datasec (abfd)->filepos = NBPG * UPAGES;
   core_stacksec (abfd)->filepos = (NBPG * UPAGES) + NBPG * u.u_dsize
 #ifdef TRAD_CORE_DSIZE_INCLUDES_TSIZE
     - NBPG * u.u_tsize
 #endif
       ;
+#endif /* not EMX */
+
   core_regsec (abfd)->filepos = 0; /* Register segment is the upage */
 
   /* Align to word at least */
   core_stacksec (abfd)->alignment_power = 2;
   core_datasec (abfd)->alignment_power = 2;
+#ifdef EMX
+  core_heapsec (abfd)->alignment_power = 2;
+#endif /* EMX */
   core_regsec (abfd)->alignment_power = 2;
 
   return abfd->xvec;
