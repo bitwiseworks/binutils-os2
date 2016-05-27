@@ -11334,7 +11334,8 @@ File: bfd.info,  Node: BFD Index,  Prev: GNU Free Documentation License,  Up: To
 BFD Index
 *********
 
- [index ]
+[index
+]
 * Menu:
 
 * _bfd_final_link_relocate:              Relocating the section contents.
