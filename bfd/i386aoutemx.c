@@ -34,12 +34,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 /* Do not "beautify" the CONCAT* macro args.  Traditional C will not
    remove whitespace added here, and thus will fail to concatenate
    the tokens.  */
-#define NAME(x,y)               CONCAT3(i386aout_emx,_32_,y)
+#define NAME(x,y)               CONCAT3(i386_aout_emx,_32_,y)
 
 /* previously in hosts/i386emx.h */
 #define DEFAULT_ARCH		bfd_arch_i386
 
-#define MY(OP)			CONCAT2(i386aout_emx_,OP)
+#define MY(OP)			CONCAT2(i386_aout_emx_,OP)
 #define TARGETNAME		"a.out-emx"
 
 #define TARGET_PAGE_SIZE	0x1000
@@ -81,7 +81,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #include <symcat.h>
 #define MY_object_p                 MY(object_p)
 #define MY_backend_data            &MY(backend_data)
-#define MY_bfd_reloc_type_lookup    i386aout_emx_reloc_type_lookup
+#define MY_bfd_reloc_type_lookup    i386_aout_emx_reloc_type_lookup
 
 #include "libaout.h"
 #include "aout/aout64.h"
