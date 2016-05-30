@@ -580,7 +580,7 @@ changequote([,])dnl
   *-*-os2*)
     SHARED_LDFLAGS="-no-undefined"
     SHARED_LIBADD="-L`pwd`/../libiberty -liberty"
-
+  ;;
   # Hack to build or1k-src on OSX
   or1k*-*-darwin*)
     SHARED_LIBADD="-L`pwd`/../libiberty/pic -L`pwd`/../intl -liberty -lintl"

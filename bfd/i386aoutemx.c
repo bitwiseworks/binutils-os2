@@ -86,10 +86,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 #include "libaout.h"
 #include "aout/aout64.h"
 
-static bfd_boolean      MY(set_sizes) PARAMS ((bfd *));
-const bfd_target *      MY(object_p) PARAMS ((bfd *));
-reloc_howto_type *      MY(reloc_type_lookup) PARAMS ((bfd *, bfd_reloc_code_real_type));
-bfd_reloc_status_type   MY(generic_reloc) PARAMS ((bfd *, arelent *, asymbol *, PTR, asection *, bfd *, char **));
+static bfd_boolean      MY(set_sizes) (bfd *);
+const bfd_target *      MY(object_p) (bfd *);
+reloc_howto_type *      MY(reloc_type_lookup) (bfd *, bfd_reloc_code_real_type);
+bfd_reloc_status_type   MY(generic_reloc) (bfd *, arelent *, asymbol *, PTR, asection *, bfd *, char **);
 /*reloc_howto_type *  MY(reloc_howto) PARAMS ((bfd *, struct reloc_std_external *, int *, int *, int *));*/
 
 reloc_howto_type MY(howto_table)[] =
@@ -139,7 +139,7 @@ EMPTY_HOWTO (-1),
 };
 
 
-CONST struct aout_backend_data MY(backend_data) = {
+static const struct aout_backend_data MY(backend_data) = {
   0,				/* zmagic contiguous */
   0,				/* text incl header */
   0,				/* entry is text address */
