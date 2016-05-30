@@ -23,17 +23,19 @@ m4_include(config/acx.m4)
 m4_include(config/override.m4)
 m4_include(config/proginstall.m4)
 m4_include(config/elf.m4)
-m4_include([libtool.m4])
-m4_include([ltoptions.m4])
-m4_include([ltsugar.m4])
-m4_include([ltversion.m4])
-m4_include([lt~obsolete.m4])
+#m4_include([libtool.m4])
+#m4_include([ltoptions.m4])
+#m4_include([ltsugar.m4])
+#m4_include([ltversion.m4])
+#m4_include([lt~obsolete.m4])
 m4_include([config/isl.m4])
 m4_include([config/cloog.m4])
 
 AC_INIT(move-if-change)
 AC_PREREQ(2.64)
 AC_DISABLE_OPTION_CHECKING
+AC_PROG_LIBTOOL
+AC_CONFIG_MACRO_DIR([.])
 
 progname=$0
 # if PWD already has a value, it is probably wrong.

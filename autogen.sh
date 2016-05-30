@@ -5,8 +5,6 @@
 olddir=`pwd`
 
 # reconf root
-echo "libtoolize root..."
-libtoolize -fi
 echo "autoreconf root..."
 autoreconf -fi
 
