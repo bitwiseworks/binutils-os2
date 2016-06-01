@@ -21,6 +21,7 @@ AC_PREREQ(2.59)
 m4_include([../bfd/version.m4])
 AC_INIT([opcodes], BFD_VERSION)
 AC_CONFIG_SRCDIR([z8k-dis.c])
+AC_CONFIG_AUX_DIR(..)
 
 AC_CANONICAL_TARGET
 AC_ISC_POSIX

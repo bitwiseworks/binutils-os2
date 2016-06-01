@@ -4,16 +4,16 @@
 
 olddir=`pwd`
 
-# reconf root
-echo "autoreconf root..."
-autoreconf -fi
-
-dirs="bfd binutils gas intl ld libiberty opcodes"
+dirs=". bfd binutils etc gas gprof intl ld libiberty opcodes"
 
 for dir in $dirs; do
-  cd $dir
-  echo "autoreconf $dir..."
+  if [ "$dir" != "." ]; then
+    cd $dir
+  fi
+  echo "executing autoreconf -fi in directory $dir "
   autoreconf -fi
-  cd ..
+  if [ "$dir" != "." ]; then
+    cd ..
+  fi
 done
 

@@ -21,6 +21,7 @@ AC_PREREQ(2.59)
 m4_include([version.m4])
 AC_INIT([bfd], BFD_VERSION)
 AC_CONFIG_SRCDIR([libbfd.c])
+AC_CONFIG_AUX_DIR(..)
 
 AC_CANONICAL_TARGET
 AC_ISC_POSIX
@@ -579,7 +580,7 @@ changequote([,])dnl
   ;;
   *-*-os2*)
     SHARED_LDFLAGS="-no-undefined"
-    SHARED_LIBADD="-L`pwd`/../libiberty -liberty"
+    SHARED_LIBADD="-L`pwd`/../libiberty -liberty -lintl"
   ;;
   # Hack to build or1k-src on OSX
   or1k*-*-darwin*)

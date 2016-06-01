@@ -24,6 +24,7 @@ AC_PREREQ(2.59)
 m4_include([../bfd/version.m4])
 AC_INIT([gas], BFD_VERSION)
 AC_CONFIG_SRCDIR(as.h)
+AC_CONFIG_AUX_DIR(..)
 
 dnl Autoconf 2.57 will find the aux dir without this.  However, unless
 dnl we specify this explicitly, automake-1.7 will assume that ylwrap is in

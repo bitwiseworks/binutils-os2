@@ -18,7 +18,7 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program; if not, write to the Free Software
-#   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 #   As a special exception to the GNU General Public License, if you
 #   distribute this file as part of a program that contains a
@@ -125,7 +125,7 @@ esac
 ld_shlibs=yes
 if test "$with_gnu_ld" = yes; then
   case "$host_os" in
-    aix[3-9]*)
+    aix3* | aix4* | aix5*)
       # On AIX/PPC, the GNU linker is very broken
       if test "$host_cpu" != ia64; then
         ld_shlibs=no
@@ -198,7 +198,7 @@ else
         hardcode_direct=unsupported
       fi
       ;;
-    aix[4-9]*)
+    aix4* | aix5*)
       if test "$host_cpu" = ia64; then
         # On IA64, the linker does run time linking by default, so we don't
         # have to do anything special.
@@ -208,7 +208,7 @@ else
         # Test if we are trying to use run time linking or normal
         # AIX style linking. If -brtl is somewhere in LDFLAGS, we
         # need to do runtime linking.
-        case $host_os in aix4.[23]|aix4.[23].*|aix[5-9]*)
+        case $host_os in aix4.[23]|aix4.[23].*|aix5*)
           for ld_flag in $LDFLAGS; do
             if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl"); then
               aix_use_runtimelinking=yes
@@ -283,6 +283,9 @@ else
       ;;
     dgux*)
       hardcode_libdir_flag_spec='-L$libdir'
+      ;;
+    freebsd1*)
+      ld_shlibs=no
       ;;
     freebsd2.2*)
       hardcode_libdir_flag_spec='-R$libdir'
@@ -429,7 +432,7 @@ libname_spec='lib$name'
 case "$host_os" in
   aix3*)
     ;;
-  aix[4-9]*)
+  aix4* | aix5*)
     ;;
   amigaos*)
     ;;
@@ -444,6 +447,8 @@ case "$host_os" in
     shrext=.dylib
     ;;
   dgux*)
+    ;;
+  freebsd1*)
     ;;
   freebsd*)
     ;;

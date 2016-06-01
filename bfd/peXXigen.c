@@ -3557,7 +3557,7 @@ rsrc_cmp (bfd_boolean is_name, rsrc_entry * a, rsrc_entry * b)
   res = rscpcmp ((const wchar_t *) astring, (const wchar_t *) bstring,
 		 min (alen, blen));
 
-#elif defined HAVE_WCHAR_H
+#elif defined HAVE_WCHAR_H && !defined(__OS2__)
   {
     unsigned int  i;
     res = 0;

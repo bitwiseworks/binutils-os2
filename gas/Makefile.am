@@ -388,7 +388,7 @@ AM_CPPFLAGS = -I. -I$(srcdir) -I../bfd -I$(srcdir)/config \
 # How to link with both our special library facilities
 # and the system's installed libraries.
 
-GASLIBS = @OPCODES_LIB@ ../bfd/libbfd.la ../libiberty/libiberty.a
+GASLIBS = ../bfd/libbfd.la @OPCODES_LIB@ ../libiberty/libiberty.a
 
 # Files to be copied away after each stage in building.
 STAGESTUFF = *.@OBJEXT@ $(noinst_PROGRAMS)
