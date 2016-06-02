@@ -34,10 +34,10 @@ MKINSTALLDIRS = @MKINSTALLDIRS@
 
 CC = @CC@
 GENCAT = @GENCAT@
-GMSGFMT = PATH="../src@PATH_IFS@$$PATH" @GMSGFMT@
+GMSGFMT = PATH="../src@PATH_SEPARATOR@$$PATH" @GMSGFMT@
 MSGFMT = @MSGFMT@
-XGETTEXT = PATH="../src@PATH_IFS@$$PATH" @XGETTEXT@
-MSGMERGE = PATH="../src@PATH_IFS@$$PATH" msgmerge
+XGETTEXT = PATH="../src@PATH_SEPARATOR@$$PATH" @XGETTEXT@
+MSGMERGE = PATH="../src@PATH_SEPARATOR@$$PATH" msgmerge
 
 DEFS = @DEFS@
 CFLAGS = @CFLAGS@
@@ -215,7 +215,7 @@ dist distdir: update-po $(DISTFILES)
 
 update-po: Makefile
 	$(MAKE) $(PACKAGE).pot
-	PATH="`pwd`/../src@PATH_IFS@$$PATH"; \
+	PATH="`pwd`/../src@PATH_SEPARATOR@$$PATH"; \
 	cd $(srcdir); \
 	catalogs='$(CATALOGS)'; \
 	for cat in $$catalogs; do \
