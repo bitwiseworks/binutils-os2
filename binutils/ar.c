@@ -1,5 +1,5 @@
 /* ar.c - Archive modify and extract.
-   Copyright (C) 1991-2014 Free Software Foundation, Inc.
+   Copyright (C) 1991-2016 Free Software Foundation, Inc.
 
    This file is part of GNU Binutils.
 
@@ -691,6 +691,7 @@ main (int argc, char **argv)
 
   program_name = argv[0];
   xmalloc_set_program_name (program_name);
+  bfd_set_error_program_name (program_name);
 #if BFD_SUPPORTS_PLUGINS
   bfd_plugin_set_program_name (program_name);
 #endif
@@ -954,7 +955,7 @@ open_inarch (const char *archive_filename, const char *file)
 		 bfd_get_filename (arch));
 	  goto bloser;
 	}
-    }  
+    }
 
   last_one = &(arch->archive_next);
   /* Read all the contents right away, regardless.  */
@@ -1002,7 +1003,7 @@ print_contents (bfd *abfd)
       if (nread != tocopy)
 	/* xgettext:c-format */
 	fatal (_("%s is not a valid archive"),
-	       bfd_get_filename (bfd_my_archive (abfd)));
+	       bfd_get_filename (abfd->my_archive));
 
       /* fwrite in mingw32 may return int instead of bfd_size_type. Cast the
 	 return value to bfd_size_type to avoid comparison between signed and
@@ -1040,6 +1041,7 @@ extract_file (bfd *abfd)
     {
       non_fatal (_("illegal pathname found in archive member: %s"),
 		 bfd_get_filename (abfd));
+      free (cbuf);
       return;
     }
 
@@ -1079,7 +1081,7 @@ extract_file (bfd *abfd)
 	if (nread != tocopy)
 	  /* xgettext:c-format */
 	  fatal (_("%s is not a valid archive"),
-		 bfd_get_filename (bfd_my_archive (abfd)));
+		 bfd_get_filename (abfd->my_archive));
 
 	/* See comment above; this saves disk arm motion */
 	if (ostream == NULL)

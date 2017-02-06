@@ -268,7 +268,7 @@
 /* Copy the first part of user declarations.  */
 #line 1 "rcparse.y"
  /* rcparse.y -- parser for Windows rc files
-   Copyright (C) 1997-2014 Free Software Foundation, Inc.
+   Copyright (C) 1997-2016 Free Software Foundation, Inc.
    Written by Ian Lance Taylor, Cygnus Support.
    Extended by Kai Tietz, Onevision.
 
@@ -856,7 +856,7 @@ static const yytype_uint16 yyrline[] =
     1776,  1780,  1802,  1806,  1810,  1814,  1821,  1825,  1835,  1838,
     1847,  1856,  1865,  1869,  1873,  1878,  1883,  1888,  1893,  1898,
     1903,  1908,  1913,  1918,  1929,  1938,  1949,  1953,  1957,  1962,
-    1967,  1972,  1977,  1982,  1987,  1992,  1997
+    1967,  1972,  1978,  1983,  1988,  1993,  1998
 };
 #endif
 
@@ -2628,7 +2628,7 @@ yyreduce:
 	      base_style = BS_AUTO3STATE;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2646,7 +2646,7 @@ yyreduce:
 	      base_style = BS_AUTOCHECKBOX;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2664,7 +2664,7 @@ yyreduce:
 	      base_style = BS_AUTORADIOBUTTON;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2682,7 +2682,7 @@ yyreduce:
 	      base_style = ES_LEFT | WS_BORDER | WS_TABSTOP;
 	      class.named = 0;
 	      class.u.id = CTL_EDIT;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2703,7 +2703,7 @@ yyreduce:
 	      base_style = BS_CHECKBOX | WS_TABSTOP;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2723,7 +2723,7 @@ yyreduce:
 	      base_style = 0;
 	      class.named = 0;
 	      class.u.id = CTL_COMBOBOX;
-	      res_text_field = res_null_text;	
+	      res_text_field = res_null_text;
 	    }
     break;
 
@@ -2765,7 +2765,7 @@ yyreduce:
 	      base_style = SS_CENTER;
 	      class.named = 0;
 	      class.u.id = CTL_STATIC;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2783,7 +2783,7 @@ yyreduce:
 	      base_style = BS_DEFPUSHBUTTON | WS_TABSTOP;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2801,7 +2801,7 @@ yyreduce:
 	      base_style = ES_LEFT | WS_BORDER | WS_TABSTOP;
 	      class.named = 0;
 	      class.u.id = CTL_EDIT;
-	      res_text_field = res_null_text;	
+	      res_text_field = res_null_text;
 	    }
     break;
 
@@ -2819,7 +2819,7 @@ yyreduce:
 	      base_style = BS_GROUPBOX;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2837,7 +2837,7 @@ yyreduce:
 	      base_style = ES_LEFT | WS_BORDER | WS_TABSTOP;
 	      class.named = 0;
 	      class.u.id = CTL_EDIT;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2890,7 +2890,7 @@ yyreduce:
 	      base_style = ES_LEFT | WS_BORDER | WS_TABSTOP;
 	      class.named = 0;
 	      class.u.id = CTL_EDIT;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2911,7 +2911,7 @@ yyreduce:
 	      base_style = LBS_NOTIFY | WS_BORDER;
 	      class.named = 0;
 	      class.u.id = CTL_LISTBOX;
-	      res_text_field = res_null_text;	
+	      res_text_field = res_null_text;
 	    }
     break;
 
@@ -2929,7 +2929,7 @@ yyreduce:
 	      base_style = SS_LEFT;
 	      class.named = 0;
 	      class.u.id = CTL_STATIC;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2964,7 +2964,7 @@ yyreduce:
 	      base_style = BS_PUSHBUTTON | WS_TABSTOP;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -2982,7 +2982,7 @@ yyreduce:
 	      base_style = BS_RADIOBUTTON;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -3000,7 +3000,7 @@ yyreduce:
 	      base_style = SS_RIGHT;
 	      class.named = 0;
 	      class.u.id = CTL_STATIC;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -3018,7 +3018,7 @@ yyreduce:
 	      base_style = 0;
 	      class.named = 0;
 	      class.u.id = CTL_SCROLLBAR;
-	      res_text_field = res_null_text;	
+	      res_text_field = res_null_text;
 	    }
     break;
 
@@ -3036,7 +3036,7 @@ yyreduce:
 	      base_style = BS_3STATE;
 	      class.named = 0;
 	      class.u.id = CTL_BUTTON;
-	      res_text_field = (yyvsp[(2) - (2)].id);	
+	      res_text_field = (yyvsp[(2) - (2)].id);
 	    }
     break;
 
@@ -4280,7 +4280,7 @@ yyreduce:
   case 257:
 #line 1889 "rcparse.y"
     {
-	    (yyval.i).val = (yyvsp[(1) - (3)].i).val / (yyvsp[(3) - (3)].i).val;
+	    (yyval.i).val = (yyvsp[(1) - (3)].i).val / ((yyvsp[(3) - (3)].i).val ? (yyvsp[(3) - (3)].i).val : 1);
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
 	  }
     break;
@@ -4288,7 +4288,7 @@ yyreduce:
   case 258:
 #line 1894 "rcparse.y"
     {
-	    (yyval.i).val = (yyvsp[(1) - (3)].i).val % (yyvsp[(3) - (3)].i).val;
+	    (yyval.i).val = (yyvsp[(1) - (3)].i).val % ((yyvsp[(3) - (3)].i).val ? (yyvsp[(3) - (3)].i).val : 1);
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
 	  }
     break;
@@ -4380,7 +4380,7 @@ yyreduce:
   case 270:
 #line 1968 "rcparse.y"
     {
-	    (yyval.i).val = (yyvsp[(1) - (3)].i).val / (yyvsp[(3) - (3)].i).val;
+	    (yyval.i).val = (yyvsp[(1) - (3)].i).val / ((yyvsp[(3) - (3)].i).val ? (yyvsp[(3) - (3)].i).val : 1);
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
 	  }
     break;
@@ -4388,13 +4388,14 @@ yyreduce:
   case 271:
 #line 1973 "rcparse.y"
     {
-	    (yyval.i).val = (yyvsp[(1) - (3)].i).val % (yyvsp[(3) - (3)].i).val;
+	    /* PR 17512: file: 89105a25.  */
+	    (yyval.i).val = (yyvsp[(1) - (3)].i).val % ((yyvsp[(3) - (3)].i).val ? (yyvsp[(3) - (3)].i).val : 1);
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
 	  }
     break;
 
   case 272:
-#line 1978 "rcparse.y"
+#line 1979 "rcparse.y"
     {
 	    (yyval.i).val = (yyvsp[(1) - (3)].i).val + (yyvsp[(3) - (3)].i).val;
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
@@ -4402,7 +4403,7 @@ yyreduce:
     break;
 
   case 273:
-#line 1983 "rcparse.y"
+#line 1984 "rcparse.y"
     {
 	    (yyval.i).val = (yyvsp[(1) - (3)].i).val - (yyvsp[(3) - (3)].i).val;
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
@@ -4410,7 +4411,7 @@ yyreduce:
     break;
 
   case 274:
-#line 1988 "rcparse.y"
+#line 1989 "rcparse.y"
     {
 	    (yyval.i).val = (yyvsp[(1) - (3)].i).val & (yyvsp[(3) - (3)].i).val;
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
@@ -4418,7 +4419,7 @@ yyreduce:
     break;
 
   case 275:
-#line 1993 "rcparse.y"
+#line 1994 "rcparse.y"
     {
 	    (yyval.i).val = (yyvsp[(1) - (3)].i).val ^ (yyvsp[(3) - (3)].i).val;
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
@@ -4426,7 +4427,7 @@ yyreduce:
     break;
 
   case 276:
-#line 1998 "rcparse.y"
+#line 1999 "rcparse.y"
     {
 	    (yyval.i).val = (yyvsp[(1) - (3)].i).val | (yyvsp[(3) - (3)].i).val;
 	    (yyval.i).dword = (yyvsp[(1) - (3)].i).dword || (yyvsp[(3) - (3)].i).dword;
@@ -4435,7 +4436,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 4439 "rcparse.c"
+#line 4440 "rcparse.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -4649,7 +4650,7 @@ yyreturn:
 }
 
 
-#line 2004 "rcparse.y"
+#line 2005 "rcparse.y"
 
 
 /* Set the language from the command line.  */
