@@ -1,5 +1,5 @@
 /* BFD back-end for Motorola MCore COFF/PE
-   Copyright (C) 1999-2014 Free Software Foundation, Inc.
+   Copyright (C) 1999-2016 Free Software Foundation, Inc.
 
    This file is part of BFD, the Binary File Descriptor library.
 
@@ -273,16 +273,15 @@ mcore_coff_reloc_type_lookup (bfd * abfd ATTRIBUTE_UNUSED,
 }
 #undef HOW2MAP
 
+#define NUM_HOWTOS NUM_ELEM (mcore_coff_howto_table)
+
 static reloc_howto_type *
 mcore_coff_reloc_name_lookup (bfd *abfd ATTRIBUTE_UNUSED,
 			      const char *r_name)
 {
   unsigned int i;
 
-  for (i = 0;
-       i < (sizeof (mcore_coff_howto_table)
-	    / sizeof (mcore_coff_howto_table[0]));
-       i++)
+  for (i = 0; i < NUM_HOWTOS; i++)
     if (mcore_coff_howto_table[i].name != NULL
 	&& strcasecmp (mcore_coff_howto_table[i].name, r_name) == 0)
       return &mcore_coff_howto_table[i];
@@ -290,8 +289,11 @@ mcore_coff_reloc_name_lookup (bfd *abfd ATTRIBUTE_UNUSED,
   return NULL;
 }
 
-#define RTYPE2HOWTO(cache_ptr, dst) \
-  (cache_ptr)->howto = mcore_coff_howto_table + (dst)->r_type;
+#define RTYPE2HOWTO(cache_ptr, dst)				\
+  ((cache_ptr)->howto =						\
+   ((dst)->r_type < NUM_HOWTOS					\
+    ? mcore_coff_howto_table + (dst)->r_type			\
+    : NULL))
 
 static reloc_howto_type *
 coff_mcore_rtype_to_howto (bfd * abfd ATTRIBUTE_UNUSED,
@@ -303,7 +305,7 @@ coff_mcore_rtype_to_howto (bfd * abfd ATTRIBUTE_UNUSED,
 {
   reloc_howto_type * howto;
 
-  if (rel->r_type >= NUM_ELEM (mcore_coff_howto_table))
+  if (rel->r_type >= NUM_HOWTOS)
     return NULL;
 
   howto = mcore_coff_howto_table + rel->r_type;
@@ -356,7 +358,7 @@ coff_mcore_relocate_section (bfd * output_bfd,
   /* If we are performing a relocatable link, we don't need to do a
      thing.  The caller will take care of adjusting the reloc
      addresses and symbol indices.  */
-  if (info->relocatable)
+  if (bfd_link_relocatable (info))
     return TRUE;
 
   /* Check if we have the same endianness */
@@ -452,12 +454,9 @@ coff_mcore_relocate_section (bfd * output_bfd,
 		     + sec->output_offset);
 	    }
 	  else
-	    {
-	      if (! ((*info->callbacks->undefined_symbol)
-		     (info, h->root.root.string, input_bfd, input_section,
-		      rel->r_vaddr - input_section->vma, TRUE)))
-		return FALSE;
-	    }
+	    (*info->callbacks->undefined_symbol)
+	      (info, h->root.root.string, input_bfd, input_section,
+	       rel->r_vaddr - input_section->vma, TRUE);
 
 	  my_name = h->root.root.string;
 	}
@@ -517,11 +516,10 @@ coff_mcore_relocate_section (bfd * output_bfd,
 	  break;
 
 	case bfd_reloc_overflow:
-	  if (! ((*info->callbacks->reloc_overflow)
-		 (info, (h ? &h->root : NULL), my_name, howto->name,
-		  (bfd_vma) 0, input_bfd,
-		  input_section, rel->r_vaddr - input_section->vma)))
-	    return FALSE;
+	  (*info->callbacks->reloc_overflow)
+	    (info, (h ? &h->root : NULL), my_name, howto->name,
+	     (bfd_vma) 0, input_bfd,
+	     input_section, rel->r_vaddr - input_section->vma);
 	}
     }
 

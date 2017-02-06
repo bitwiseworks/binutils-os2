@@ -1,5 +1,5 @@
 /* size.c -- report size of various sections of an executable file.
-   Copyright (C) 1991-2014 Free Software Foundation, Inc.
+   Copyright (C) 1991-2016 Free Software Foundation, Inc.
 
    This file is part of GNU Binutils.
 
@@ -137,6 +137,7 @@ main (int argc, char **argv)
 #endif /* __EMX__ */
   program_name = *argv;
   xmalloc_set_program_name (program_name);
+  bfd_set_error_program_name (program_name);
 
   expandargv (&argc, &argv);
 
@@ -369,7 +370,14 @@ display_archive (bfd *file)
       display_bfd (arfile);
 
       if (last_arfile != NULL)
-	bfd_close (last_arfile);
+	{
+	  bfd_close (last_arfile);
+
+	  /* PR 17512: file: a244edbc.  */
+	  if (last_arfile == arfile)
+	    return;
+	}
+
       last_arfile = arfile;
     }
 
@@ -495,8 +503,8 @@ print_berkeley_format (bfd *abfd)
 
   fputs (bfd_get_filename (abfd), stdout);
 
-  if (bfd_my_archive (abfd))
-    printf (" (ex %s)", bfd_get_filename (bfd_my_archive (abfd)));
+  if (abfd->my_archive)
+    printf (" (ex %s)", bfd_get_filename (abfd->my_archive));
 }
 
 /* I REALLY miss lexical functions! */
@@ -583,8 +591,8 @@ print_sysv_format (bfd *file)
   svi_total = 0;
   printf ("%s  ", bfd_get_filename (file));
 
-  if (bfd_my_archive (file))
-    printf (" (ex %s)", bfd_get_filename (bfd_my_archive (file)));
+  if (file->my_archive)
+    printf (" (ex %s)", bfd_get_filename (file->my_archive));
 
   printf (":\n%-*s   %*s   %*s\n", svi_namelen, "section",
 	  svi_sizelen, "size", svi_vmalen, "addr");

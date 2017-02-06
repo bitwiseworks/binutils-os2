@@ -94,10 +94,10 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 21 "itbl-parse.y"
+#line 21 "./itbl-parse.y"
 
 
-/* 
+/*
 
 Yacc grammar for instruction table entries.
 
@@ -120,7 +120,7 @@ The table is an ordinary text file that the GNU assembler reads when
 it starts.  Using the information in the table, the assembler
 generates an internal list of valid coprocessor registers and
 functions.  The assembler uses this internal list in addition to the
-standard MIPS registers and instructions which are built-in to the 
+standard MIPS registers and instructions which are built-in to the
 assembler during code generation.
 
 To specify the coprocessor table when invoking the GNU assembler, use
@@ -202,7 +202,7 @@ Here is the grammar for the coprocessor table:
 	    entrydef -> type name val
 	    entrydef -> 'insn' name val funcdef ; type of entry (instruction)
 
-	    z -> 'p'['0'..'3']	    	     ; processor number 
+	    z -> 'p'['0'..'3']	    	     ; processor number
 	    type -> ['dreg' | 'creg' | 'greg' ]	     ; type of entry (register)
 	; 'dreg', 'creg' or 'greg' specifies a data, control, or general
 	;	    register mnemonic, respectively
@@ -216,10 +216,10 @@ Here is the grammar for the coprocessor table:
 	    field -> [','] ftype frange flags
 	    flags -> ['*' flagexpr]
 	    flagexpr -> '[' flagexpr ']'
-	    flagexpr -> val '|' flagexpr 
+	    flagexpr -> val '|' flagexpr
 	    ftype -> [ type | 'immed' | 'addr' ]
 	; 'immed' specifies an immediate value; see grammar for "val" above
-	    	; 'addr' specifies a C identifier; name of symbol to be resolved at 
+	    	; 'addr' specifies a C identifier; name of symbol to be resolved at
 	;	    link time
 	    frange -> ':' val '-' val	; starting to ending bit positions, where
 	    	    	    	; where 0 is least significant bit
@@ -227,9 +227,9 @@ Here is the grammar for the coprocessor table:
 
 	    comment -> [';'|'#'] [char]*
 	    char -> any printable character
-	    ltr -> ['a'..'z'|'A'..'Z'] 
+	    ltr -> ['a'..'z'|'A'..'Z']
 	    dec -> ['0'..'9']*	    	    	    	    	     ; value in decimal
-	    hex -> '0x'['0'..'9' | 'a'..'f' | 'A'..'F']*	; value in hexadecimal 
+	    hex -> '0x'['0'..'9' | 'a'..'f' | 'A'..'F']*	; value in hexadecimal
 
 
 Examples
@@ -241,7 +241,7 @@ The table:
 
 	    p1 dreg d1 1	     ; data register "d1" for COP1 has value 1
 	    p1 creg c3 3	     ; ctrl register "c3" for COP1 has value 3
-	    p3 func fill 0x1f:24-20	      ; function "fill" for COP3 has value 31 and 
+	    p3 func fill 0x1f:24-20	      ; function "fill" for COP3 has value 31 and
 	    	    	; no fields
 
 will allow the assembler to accept the following coprocessor instructions:
@@ -249,8 +249,8 @@ will allow the assembler to accept the following coprocessor instructions:
 	    LWC1 d1,0x100 ($2)
 	    fill
 
-Here, the general purpose register "$2", and instruction "LWC1", are standard 
-mnemonics built-in to the MIPS assembler.  
+Here, the general purpose register "$2", and instruction "LWC1", are standard
+mnemonics built-in to the MIPS assembler.
 
 
 Example 2:
@@ -259,9 +259,9 @@ The table:
 
 	    p3 dreg d3 3	     ; data register "d3" for COP3 has value 3
 	    p3 creg c2 22	     ; control register "c2" for COP3 has value 22
-	    p3 func fee 0x1f:24-20 dreg:17-13 creg:12-8 immed:7-0 
-	    	; function "fee" for COP3 has value 31, and 3 fields 
-	    	; consisting of a data register, a control register, 
+	    p3 func fee 0x1f:24-20 dreg:17-13 creg:12-8 immed:7-0
+	    	; function "fee" for COP3 has value 31, and 3 fields
+	    	; consisting of a data register, a control register,
 	    	; and an immediate value.
 
 will allow the assembler to accept the following coprocessor instruction:
@@ -272,7 +272,7 @@ and will emit the object code:
 
 	    31-26  25 24-20 19-18  17-13 12-8  7-0
 	    COPz   CO fun	    	      dreg  creg  immed
-	    010011 1  11111 00	     00011 10110 00000001 
+	    010011 1  11111 00	     00011 10110 00000001
 
 	    0x4ff07601
 
@@ -293,8 +293,8 @@ instruction:
 and will emit the object code:
 
 	    31-26  25 24-20 19-18  17-13 12-8  7-0
-	    COPz   CO fun	    	      dreg  creg  
-	    010011 1  11111 00	     00011 10110 00000001 
+	    COPz   CO fun	    	      dreg  creg
+	    010011 1  11111 00	     00011 10110 00000001
 
 	    0x4ff07601
 
@@ -307,7 +307,7 @@ Additional notes:
 Encoding of ranges:
 To handle more than one bit position range within an instruction,
 use 0s to mask out the ranges which don't apply.
-May decide to modify the syntax to allow commas separate multiple 
+May decide to modify the syntax to allow commas separate multiple
 ranges within an instruction (range','range).
 
 Changes in grammar:
@@ -315,7 +315,7 @@ Changes in grammar:
 was deleted from the original format such that we now count the fields.
 
 ----
-FIXME! should really change lexical analyzer 
+FIXME! should really change lexical analyzer
 to recognize 'dreg' etc. in context sensitive way.
 Currently function names or mnemonics may be incorrectly parsed as keywords
 
@@ -340,13 +340,13 @@ FIXME! hex is ambiguous with any digit
 #if DBG_LVL >= 1
 #define DBG(x) printf x
 #else
-#define DBG(x) 
+#define DBG(x)
 #endif
 
 #if DBG_LVL >= 2
 #define DBGL2(x) printf x
 #else
-#define DBGL2(x) 
+#define DBGL2(x)
 #endif
 
 static int sbit, ebit;
@@ -375,7 +375,7 @@ static int yyerror (const char *);
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 282 "itbl-parse.y"
+#line 282 "./itbl-parse.y"
 {
     char *str;
     int num;
@@ -1620,16 +1620,16 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 309 "itbl-parse.y"
+#line 309 "./itbl-parse.y"
     {
-	    DBG (("line %d: entry pnum=%d type=%d name=%s value=x%x\n", 
+	    DBG (("line %d: entry pnum=%d type=%d name=%s value=x%x\n",
 	    	    insntbl_line, (yyvsp[(1) - (5)].num), (yyvsp[(2) - (5)].num), (yyvsp[(3) - (5)].str), (yyvsp[(4) - (5)].val)));
 	    itbl_add_reg ((yyvsp[(1) - (5)].num), (yyvsp[(2) - (5)].num), (yyvsp[(3) - (5)].str), (yyvsp[(4) - (5)].val));
 	  }
     break;
 
   case 6:
-#line 315 "itbl-parse.y"
+#line 315 "./itbl-parse.y"
     {
 	    DBG (("line %d: entry pnum=%d type=INSN name=%s value=x%x",
 	    	    insntbl_line, (yyvsp[(1) - (6)].num), (yyvsp[(3) - (6)].str), (yyvsp[(4) - (6)].val)));
@@ -1639,12 +1639,12 @@ yyreduce:
     break;
 
   case 7:
-#line 322 "itbl-parse.y"
+#line 322 "./itbl-parse.y"
     {}
     break;
 
   case 13:
-#line 335 "itbl-parse.y"
+#line 335 "./itbl-parse.y"
     {
 	    DBGL2 (("ftype\n"));
 	    (yyval.num) = (yyvsp[(1) - (1)].num);
@@ -1652,7 +1652,7 @@ yyreduce:
     break;
 
   case 14:
-#line 340 "itbl-parse.y"
+#line 340 "./itbl-parse.y"
     {
 	    DBGL2 (("addr\n"));
 	    (yyval.num) = ADDR;
@@ -1660,7 +1660,7 @@ yyreduce:
     break;
 
   case 15:
-#line 345 "itbl-parse.y"
+#line 345 "./itbl-parse.y"
     {
 	    DBGL2 (("immed\n"));
 	    (yyval.num) = IMMED;
@@ -1668,37 +1668,37 @@ yyreduce:
     break;
 
   case 16:
-#line 353 "itbl-parse.y"
+#line 353 "./itbl-parse.y"
     {
-	    DBG (("line %d: field type=%d sbit=%d ebit=%d, flags=0x%x\n", 
+	    DBG (("line %d: field type=%d sbit=%d ebit=%d, flags=0x%x\n",
 	    	    insntbl_line, (yyvsp[(1) - (3)].num), sbit, ebit, (yyvsp[(3) - (3)].val)));
 	    itbl_add_operand (insn, (yyvsp[(1) - (3)].num), sbit, ebit, (yyvsp[(3) - (3)].val));
 	  }
     break;
 
   case 17:
-#line 362 "itbl-parse.y"
+#line 362 "./itbl-parse.y"
     {
 	    (yyval.val) = (yyvsp[(1) - (3)].num) | (yyvsp[(3) - (3)].val);
 	  }
     break;
 
   case 18:
-#line 366 "itbl-parse.y"
+#line 366 "./itbl-parse.y"
     {
 	    (yyval.val) = (yyvsp[(2) - (3)].val);
 	  }
     break;
 
   case 19:
-#line 370 "itbl-parse.y"
+#line 370 "./itbl-parse.y"
     {
 	    (yyval.val) = (yyvsp[(1) - (1)].num);
 	  }
     break;
 
   case 20:
-#line 377 "itbl-parse.y"
+#line 377 "./itbl-parse.y"
     {
 	    DBGL2 (("flags=%d\n", (yyvsp[(2) - (2)].val)));
 	    (yyval.val) = (yyvsp[(2) - (2)].val);
@@ -1706,14 +1706,14 @@ yyreduce:
     break;
 
   case 21:
-#line 382 "itbl-parse.y"
+#line 382 "./itbl-parse.y"
     {
 	    (yyval.val) = 0;
 	  }
     break;
 
   case 22:
-#line 389 "itbl-parse.y"
+#line 389 "./itbl-parse.y"
     {
 	    DBGL2 (("range %d %d\n", (yyvsp[(2) - (4)].num), (yyvsp[(4) - (4)].num)));
 	    sbit = (yyvsp[(2) - (4)].num);
@@ -1722,7 +1722,7 @@ yyreduce:
     break;
 
   case 23:
-#line 395 "itbl-parse.y"
+#line 395 "./itbl-parse.y"
     {
 	    sbit = 31;
 	    ebit = 0;
@@ -1730,7 +1730,7 @@ yyreduce:
     break;
 
   case 24:
-#line 403 "itbl-parse.y"
+#line 403 "./itbl-parse.y"
     {
 	    DBGL2 (("pnum=%d\n",(yyvsp[(1) - (1)].num)));
 	    (yyval.num) = (yyvsp[(1) - (1)].num);
@@ -1738,7 +1738,7 @@ yyreduce:
     break;
 
   case 25:
-#line 411 "itbl-parse.y"
+#line 411 "./itbl-parse.y"
     {
 	    DBGL2 (("dreg\n"));
 	    (yyval.num) = DREG;
@@ -1746,7 +1746,7 @@ yyreduce:
     break;
 
   case 26:
-#line 416 "itbl-parse.y"
+#line 416 "./itbl-parse.y"
     {
 	    DBGL2 (("creg\n"));
 	    (yyval.num) = CREG;
@@ -1754,7 +1754,7 @@ yyreduce:
     break;
 
   case 27:
-#line 421 "itbl-parse.y"
+#line 421 "./itbl-parse.y"
     {
 	    DBGL2 (("greg\n"));
 	    (yyval.num) = GREG;
@@ -1762,15 +1762,15 @@ yyreduce:
     break;
 
   case 28:
-#line 429 "itbl-parse.y"
+#line 429 "./itbl-parse.y"
     {
 	    DBGL2 (("name=%s\n",(yyvsp[(1) - (1)].str)));
-	    (yyval.str) = (yyvsp[(1) - (1)].str); 
+	    (yyval.str) = (yyvsp[(1) - (1)].str);
 	  }
     break;
 
   case 29:
-#line 445 "itbl-parse.y"
+#line 445 "./itbl-parse.y"
     {
 	    DBGL2 (("val=x%x\n",(yyvsp[(1) - (1)].num)));
 	    (yyval.val) = (yyvsp[(1) - (1)].num);
@@ -1993,12 +1993,11 @@ yyreturn:
 }
 
 
-#line 450 "itbl-parse.y"
+#line 450 "./itbl-parse.y"
 
 
 static int
-yyerror (msg)
-     const char *msg;
+yyerror (const char *msg)
 {
   printf ("line %d: %s\n", insntbl_line, msg);
   return 0;

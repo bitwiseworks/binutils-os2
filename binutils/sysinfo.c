@@ -1372,10 +1372,10 @@ yyreduce:
     {
     case 'i':
       printf("#ifdef SYSROFF_SWAP_IN\n");
-      break; 
+      break;
     case 'p':
       printf("#ifdef SYSROFF_p\n");
-      break; 
+      break;
     case 'd':
       break;
     case 'g':
@@ -1400,7 +1400,7 @@ yyreduce:
   case 'g':
   case 'c':
     printf("#endif\n");
-    break; 
+    break;
   case 'd':
     break;
   }
@@ -1411,7 +1411,7 @@ yyreduce:
 #line 98 "sysinfo.y"
     {
 	it = (yyvsp[(2) - (3)].s); code = (yyvsp[(3) - (3)].i);
-	switch (writecode) 
+	switch (writecode)
 	  {
 	  case 'd':
 	    printf("\n\n\n#define IT_%s_CODE 0x%x\n", it,code);
@@ -1430,7 +1430,7 @@ yyreduce:
 	    printf("\tunsigned char raw[255];\n");
 	    printf("\tint idx = 0;\n");
 	    printf("\tint size;\n");
-	    printf("\tmemset(raw,0,255);\n");	
+	    printf("\tmemset(raw,0,255);\n");
 	    printf("\tmemset(ptr,0,sizeof(*ptr));\n");
 	    printf("\tsize = fillup(raw);\n");
 	    break;
@@ -1464,12 +1464,12 @@ yyreduce:
 #line 149 "sysinfo.y"
     {
   switch (writecode) {
-  case 'd': 
+  case 'd':
     printf("};\n");
     break;
   case 'g':
     printf("\tchecksum(ffile,raw, idx, IT_%s_CODE);\n", it);
-    
+
   case 'i':
 
   case 'o':
@@ -1483,7 +1483,7 @@ yyreduce:
 #line 176 "sysinfo.y"
     {
 	  rdepth++;
-	  switch (writecode) 
+	  switch (writecode)
 	    {
 	    case 'c':
 	      if (rdepth==1)
@@ -1494,13 +1494,13 @@ yyreduce:
 	    case 'g':
 	    case 'o':
 
-	      if (rdepth==1) 
+	      if (rdepth==1)
 		{
 	      printf("\t{ int n; for (n = 0; n < %s; n++) {\n",    (yyvsp[(3) - (3)].s));
 	    }
 	      if (rdepth == 2) {
 	      printf("\t{ int m; for (m = 0; m < %s[n]; m++) {\n",    (yyvsp[(3) - (3)].s));
-	    }		
+	    }
 
 	      break;
 	    }
@@ -1530,7 +1530,7 @@ yyreduce:
   case 14:
 #line 223 "sysinfo.y"
     {
-	  switch (writecode) 
+	  switch (writecode)
 	    {
 	    case 'i':
 	    case 'g':
@@ -1570,12 +1570,12 @@ yyreduce:
 	  char *id = (yyvsp[(7) - (10)].s);
 char *p = names[rdepth];
 char *ptr = pnames[rdepth];
-	  switch (writecode) 
+	  switch (writecode)
 	    {
 	    case 'g':
-	      if (size % 8) 
+	      if (size % 8)
 		{
-		  
+
 		  printf("\twriteBITS(ptr->%s%s,raw,&idx,%d);\n",
 			 id,
 			 names[rdepth], size);
@@ -1587,15 +1587,15 @@ char *ptr = pnames[rdepth];
 		       id,
 		       names[rdepth],size/8);
 		}
-	      break;	      
+	      break;
 	    case 'i':
 	      {
 
 		if (rdepth >= 1)
 
 		  {
-		    printf("if (!ptr->%s) ptr->%s = (%s*)xcalloc(%s, sizeof(ptr->%s[0]));\n", 
-			   id, 
+		    printf("if (!ptr->%s) ptr->%s = (%s*)xcalloc(%s, sizeof(ptr->%s[0]));\n",
+			   id,
 			   id,
 			   type,
 			   repeat,
@@ -1604,8 +1604,8 @@ char *ptr = pnames[rdepth];
 
 		if (rdepth == 2)
 		  {
-		    printf("if (!ptr->%s[n]) ptr->%s[n] = (%s**)xcalloc(%s[n], sizeof(ptr->%s[n][0]));\n", 
-			   id, 
+		    printf("if (!ptr->%s[n]) ptr->%s[n] = (%s**)xcalloc(%s[n], sizeof(ptr->%s[n][0]));\n",
+			   id,
 			   id,
 			   type,
 			   repeat,
@@ -1614,11 +1614,11 @@ char *ptr = pnames[rdepth];
 
 	      }
 
-	      if (size % 8) 
+	      if (size % 8)
 		{
 		  printf("\tptr->%s%s = getBITS(raw,&idx, %d,size);\n",
 			 id,
-			 names[rdepth], 
+			 names[rdepth],
 			 size);
 		}
 	      else {
@@ -1633,7 +1633,7 @@ char *ptr = pnames[rdepth];
 	      printf("\tput%s(raw,%d,%d,&idx,ptr->%s%s);\n", type,size/8,size%8,id,names[rdepth]);
 	      break;
 	    case 'd':
-	      if (repeat) 
+	      if (repeat)
 		printf("\t/* repeat %s */\n", repeat);
 
 		  if (type[0] == 'I') {
@@ -1655,7 +1655,7 @@ char *ptr = pnames[rdepth];
 		  else   if (type[0] == 'C')
 		  printf("\tprintf(\"%%s\\n\",ptr->%s%s);\n", id,p);
 
-		  else   if (type[0] == 'B') 
+		  else   if (type[0] == 'B')
 		    {
 		  printf("\tpbarray(&ptr->%s%s);\n", id,p);
 		}
@@ -1697,8 +1697,8 @@ char *ptr = pnames[rdepth];
 
   case 27:
 #line 382 "sysinfo.y"
-    { 
-	  switch (writecode) 
+    {
+	  switch (writecode)
 	    {
 	    case 'd':
 	      printf("#define %s %s\n", (yyvsp[(3) - (5)].s),(yyvsp[(4) - (5)].s));
@@ -1936,7 +1936,7 @@ yyreturn:
 
 int yydebug;
 
-int 
+int
 main (int ac, char **av)
 {
   yydebug=0;

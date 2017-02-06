@@ -135,20 +135,20 @@
 #line 1 "defparse.y"
  /* defparse.y - parser for .def files */
 
-/* Copyright (C) 1995-2014 Free Software Foundation, Inc.
-   
+/* Copyright (C) 1995-2016 Free Software Foundation, Inc.
+
    This file is part of GNU Binutils.
-   
+
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 3 of the License, or
    (at your option) any later version.
-   
+
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-   
+
    You should have received a copy of the GNU General Public License
    along with this program; if not, write to the Free Software
    Foundation, Inc., 51 Franklin Street - Fifth Floor, Boston,
@@ -1847,7 +1847,7 @@ yyreduce:
 
   case 80:
 #line 193 "defparse.y"
-    { 
+    {
 	    char *name = xmalloc (strlen ((yyvsp[(2) - (2)].id)) + 2);
 	    sprintf (name, ".%s", (yyvsp[(2) - (2)].id));
 	    (yyval.id) = name;
@@ -1856,7 +1856,7 @@ yyreduce:
 
   case 81:
 #line 199 "defparse.y"
-    { 
+    {
 	    char *name = xmalloc (strlen ((yyvsp[(1) - (3)].id_const)) + 1 + strlen ((yyvsp[(3) - (3)].id)) + 1);
 	    sprintf (name, "%s.%s", (yyvsp[(1) - (3)].id_const), (yyvsp[(3) - (3)].id));
 	    (yyval.id) = name;
@@ -1865,7 +1865,7 @@ yyreduce:
 
   case 82:
 #line 205 "defparse.y"
-    { 
+    {
 	    char *name = xmalloc (strlen ((yyvsp[(1) - (3)].id)) + 1 + strlen ((yyvsp[(3) - (3)].id)) + 1);
 	    sprintf (name, "%s.%s", (yyvsp[(1) - (3)].id), (yyvsp[(3) - (3)].id));
 	    (yyval.id) = name;

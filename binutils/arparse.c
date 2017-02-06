@@ -114,7 +114,7 @@
 
 /* arparse.y - Stange script language parser */
 
-/* Copyright (C) 1992-2014 Free Software Foundation, Inc.
+/* Copyright (C) 1992-2016 Free Software Foundation, Inc.
 
    This file is part of GNU Binutils.
 
@@ -1523,7 +1523,7 @@ yyreduce:
   case 38:
 #line 173 "arparse.y"
     { 	struct list *n  = (struct list *) malloc(sizeof(struct list));
-			n->next = (yyvsp[(1) - (3)].list); 
+			n->next = (yyvsp[(1) - (3)].list);
 			n->name = (yyvsp[(3) - (3)].name);
 			(yyval.list) = n;
 		 }
