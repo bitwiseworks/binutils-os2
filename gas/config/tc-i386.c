@@ -9831,8 +9831,8 @@ const char *md_shortopts = "qn";
 #define OPTION_MFENCE_AS_LOCK_ADD (OPTION_MD_BASE + 24)
 #define OPTION_MRELAX_RELOCATIONS (OPTION_MD_BASE + 25)
 #ifdef EMX
-#define OPTION_ZOMF (OPTION_MD_BASE + 21)
-#define OPTION_ZSTRIP (OPTION_MD_BASE + 22)
+#define OPTION_ZOMF (OPTION_MD_BASE + 26)
+#define OPTION_ZSTRIP (OPTION_MD_BASE + 27)
 #endif
 
 struct option md_longopts[] =

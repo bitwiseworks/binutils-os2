@@ -66,7 +66,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
      N_SHARED_LIB(x) ? 0 : \
      N_HEADER_IN_TEXT(x) ?	\
 	    EXEC_BYTES_SIZE :			/* no padding */\
-            0x400 + (x).a_hdrofs \
+            0x400 + (x)->a_hdrofs \
     )
 
 #define N_DATOFF(x) (N_TXTOFF(x) + N_TXTSIZE(x))
@@ -245,7 +245,7 @@ MY(object_p) (abfd)
   return target;
 #else
   struct external_exec exec_bytes;	/* Raw exec header from file.  */
-  struct internal_exec exec;	/* Cleaned-up exec header.  */
+  struct internal_exec *exec;	/* Cleaned-up exec header.  */
   const bfd_target *target;
   bfd_size_type amt = EXEC_BYTES_SIZE;
 
@@ -257,26 +257,26 @@ MY(object_p) (abfd)
     }
 
 #ifdef SWAP_MAGIC
-  exec.a_info = SWAP_MAGIC (exec_bytes.e_info);
+  exec->a_info = SWAP_MAGIC (exec_bytes.e_info);
 #else
-  exec.a_info = H_GET_32 (abfd, exec_bytes.e_info);
+  exec->a_info = H_GET_32 (abfd, exec_bytes.e_info);
 #endif /* SWAP_MAGIC */
 
-  if (N_BADMAG (exec))
+  if (N_BADMAG (&exec))
     return 0;
 #ifdef MACHTYPE_OK
-  if (!(MACHTYPE_OK (N_MACHTYPE (exec))))
+  if (!(MACHTYPE_OK (N_MACHTYPE (&exec))))
     return 0;
 #endif
 
-  NAME (aout, swap_exec_header_in) (abfd, &exec_bytes, &exec);
+  NAME (aout, swap_exec_header_in) (abfd, &exec_bytes, exec);
 
 #ifdef SWAP_MAGIC
   /* swap_exec_header_in read in a_info with the wrong byte order */
-  exec.a_info = SWAP_MAGIC (exec_bytes.e_info);
+  exec->a_info = SWAP_MAGIC (exec_bytes.e_info);
 #endif /* SWAP_MAGIC */
 
-  target = NAME(aout,some_aout_object_p) (abfd, &exec, MY(callback));
+  target = NAME(aout,some_aout_object_p) (abfd, exec, MY(callback));
 
 #ifdef ENTRY_CAN_BE_ZERO
   /* The NEWSOS3 entry-point is/was 0, which (amongst other lossage)
@@ -285,7 +285,7 @@ MY(object_p) (abfd)
      There must be no relocations, the bfd can be neither an
      archive nor an archive element, and the file must be executable.  */
 
-  if (exec.a_trsize + exec.a_drsize == 0
+  if (exec->a_trsize + exec->a_drsize == 0
       && bfd_get_format (abfd) == bfd_object && abfd->my_archive == NULL)
     {
       struct stat buf;
