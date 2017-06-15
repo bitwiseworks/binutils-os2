@@ -17,6 +17,10 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+VENDOR ?=community
+BUILD_INFO=\#\#1\#\# $(shell date +'%d %b %Y %H:%M:%S')     $(shell uname -n)
+BUILDLEVEL_INFO=@\#$(VENDOR):$(VERSION)\#@$(BUILD_INFO)::::0::
+
 AUTOMAKE_OPTIONS = 1.11 foreign no-dist
 ACLOCAL_AMFLAGS = -I .. -I ../config -I ../bfd
 
@@ -325,6 +329,7 @@ libopcodes_la_SOURCES =  dis-buf.c disassemble.c dis-init.c
 libopcodes_la_DEPENDENCIES = $(OFILES) @SHARED_DEPENDENCIES@
 libopcodes_la_LIBADD = $(OFILES) @SHARED_LIBADD@
 libopcodes_la_LDFLAGS += -release `cat ../bfd/libtool-soversion` @SHARED_LDFLAGS@
+libopcodes_la_LDFLAGS += -buildlevel '$(BUILDLEVEL_INFO)'
 # Allow dependency tracking to work on all the source files.
 EXTRA_libopcodes_la_SOURCES = $(LIBOPCODES_CFILES)
 
