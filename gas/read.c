@@ -765,9 +765,11 @@ do_align (unsigned int n, char *fill, unsigned int len, unsigned int max)
 	    {
 	      if (now_seg == absolute_section)
 		as_warn (_("ignoring fill value in absolute section"));
+#ifndef __OS2__  // this needs to be reverted, when gcc issue #27 is fixed
 	      else
 		as_warn (_("ignoring fill value in section `%s'"),
 			 segment_name (now_seg));
+#endif
 	      break;
 	    }
       fill = NULL;
