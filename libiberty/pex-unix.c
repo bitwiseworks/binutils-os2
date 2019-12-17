@@ -61,7 +61,11 @@ extern int errno;
 #endif
 
 #ifdef __OS2__
-#  define _P_NOWAITO	3
+#  ifdef P_NOWAIT
+#    define _P_NOWAITO	P_NOWAIT
+#  else
+#    define _P_NOWAITO	3 /* why?? */
+#  endif
 #endif
 
 #ifdef vfork /* Autoconf may define this to fork for us. */
