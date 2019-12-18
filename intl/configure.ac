@@ -1,11 +1,11 @@
-AC_PREREQ(2.64)
 AC_INIT
+AC_USE_SYSTEM_EXTENSIONS
 AC_CONFIG_SRCDIR(gettext.c)
 AC_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR(../config)
 AC_CONFIG_AUX_DIR(..)
 AM_GNU_GETTEXT_VERSION(0.12.1)
-AM_GNU_GETTEXT
+AM_GNU_GETTEXT([], [need-ngettext])
 
 # This replaces the extensive use of DEFS in the original Makefile.in.
 AC_DEFINE(IN_LIBINTL, 1, [Define because this is libintl.])

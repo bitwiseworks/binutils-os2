@@ -1,5 +1,5 @@
 /* Disassembly routines for TMS320C30 architecture
-   Copyright (C) 1998-2016 Free Software Foundation, Inc.
+   Copyright (C) 1998-2019 Free Software Foundation, Inc.
    Contributed by Steven Haworth (steve@pm.cse.rmit.edu.au)
 
    This file is part of the GNU opcodes library.
@@ -22,7 +22,7 @@
 #include "sysdep.h"
 #include <errno.h>
 #include <math.h>
-#include "dis-asm.h"
+#include "disassemble.h"
 #include "opcode/tic30.h"
 
 #define NORMAL_INSN   1
@@ -253,7 +253,9 @@ get_indirect_operand (unsigned short fragment,
 		for (i = 0, bufcnt = 0; i < len; i++, bufcnt++)
 		  {
 		    buffer[bufcnt] = current_ind->syntax[i];
-		    if (buffer[bufcnt - 1] == 'a' && buffer[bufcnt] == 'r')
+		    if (bufcnt > 0
+			&& buffer[bufcnt - 1] == 'a'
+			&& buffer[bufcnt] == 'r')
 		      buffer[++bufcnt] = arnum + '0';
 		    if (buffer[bufcnt] == '('
 			&& current_ind->displacement == DISP_REQUIRED)

@@ -1,5 +1,5 @@
 /* tc-cris.c -- Assembler code for the CRIS CPU core.
-   Copyright (C) 2000-2016 Free Software Foundation, Inc.
+   Copyright (C) 2000-2019 Free Software Foundation, Inc.
 
    Contributed by Axis Communications AB, Lund, Sweden.
    Originally written for GAS 1.38.1 by Mikael Asker.
@@ -81,7 +81,7 @@ struct cris_prefix
   expressionS expr;
 
   /* If there's an expression, we might need a relocation.  Here's the
-     type of what relocation to start relaxaton with.
+     type of what relocation to start relaxation with.
      The relocation is assumed to start immediately after the prefix insn,
      so we don't provide an offset.  */
   enum bfd_reloc_code_real reloc;
@@ -4054,23 +4054,15 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg)
   if (fixP->fx_addsy == 0 && !fixP->fx_pcrel)
     fixP->fx_done = 1;
 
-  if (fixP->fx_bit_fixP || fixP->fx_im_disp != 0)
-    {
-      as_bad_where (fixP->fx_file, fixP->fx_line, _("Invalid relocation"));
-      fixP->fx_done = 1;
-    }
-  else
-    {
-      /* We can't actually support subtracting a symbol.  */
-      if (fixP->fx_subsy != (symbolS *) NULL)
-	as_bad_where (fixP->fx_file, fixP->fx_line,
-		      _("expression too complex"));
+  /* We can't actually support subtracting a symbol.  */
+  if (fixP->fx_subsy != (symbolS *) NULL)
+    as_bad_where (fixP->fx_file, fixP->fx_line,
+		  _("expression too complex"));
 
-      /* This operand-type is scaled.  */
-      if (fixP->fx_r_type == BFD_RELOC_CRIS_LAPCQ_OFFSET)
-	val /= 2;
-      cris_number_to_imm (buf, val, fixP->fx_size, fixP, seg);
-    }
+  /* This operand-type is scaled.  */
+  if (fixP->fx_r_type == BFD_RELOC_CRIS_LAPCQ_OFFSET)
+    val /= 2;
+  cris_number_to_imm (buf, val, fixP->fx_size, fixP, seg);
 }
 
 /* All relocations are relative to the location just after the fixup;

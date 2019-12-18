@@ -1,5 +1,5 @@
 /* tc-dlx.c -- Assemble for the DLX
-   Copyright (C) 2002-2016 Free Software Foundation, Inc.
+   Copyright (C) 2002-2019 Free Software Foundation, Inc.
 
    This file is part of GAS, the GNU Assembler.
 
@@ -776,10 +776,11 @@ machine_ip (char *str)
 	  /* Macro move operand/reg.  */
 	  if (operand->X_op == O_register)
 	    {
-	      /* Its a register.  */
+	      /* It's a register.  */
 	      reg_shift = 21;
 	      goto general_reg;
 	    }
+	  /* Fall through.  */
 
 	  /* The immediate 16 bits literal, bit 0-15.  */
 	case 'i':
@@ -1013,10 +1014,6 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg ATTRIBUTE_UNUSED)
 	  free (fixP->fx_bit_fixP);
 	  fixP->fx_bit_fixP = NULL;
 	}
-#ifdef DEBUG
-      else
-	know ((fixP->fx_bit_fixP != NULL));
-#endif
       break;
 
     case RELOC_DLX_HI16:
@@ -1026,10 +1023,6 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg ATTRIBUTE_UNUSED)
 	  free (fixP->fx_bit_fixP);
 	  fixP->fx_bit_fixP = NULL;
 	}
-#ifdef DEBUG
-      else
-	know ((fixP->fx_bit_fixP != NULL));
-#endif
       break;
 
     case RELOC_DLX_REL26:
@@ -1039,10 +1032,6 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg ATTRIBUTE_UNUSED)
 	  free (fixP->fx_bit_fixP);
 	  fixP->fx_bit_fixP = NULL;
 	}
-#ifdef DEBUG
-      else
-	know ((fixP->fx_bit_fixP != NULL));
-#endif
       break;
 
     case BFD_RELOC_VTABLE_INHERIT:
@@ -1065,6 +1054,8 @@ md_apply_fix (fixS *fixP, valueT *valP, segT seg ATTRIBUTE_UNUSED)
   number_to_chars_bigendian (place, val, fixP->fx_size);
   if (fixP->fx_addsy == NULL)
     fixP->fx_done = 1;
+  if (fixP->fx_bit_fixP != NULL)
+    fixP->fx_no_overflow = 1;
 }
 
 const char *md_shortopts = "";

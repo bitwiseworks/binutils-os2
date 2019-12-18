@@ -1,456 +1,533 @@
-2016-06-30  Matthew Wahab  <matthew.wahab@arm.com>
+2019-09-09  Phil Blundell  <pb@pbcl.net>
 
-	* opcode/arm.h (ARM_ARCH_V8_2a): Add FPU_NEON_EXT_RDMA to the set
-	of enabled FPU features.
+	binutils 2.33 branch created.
 
-2016-06-29  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-08-30  Claudiu Zissulescu <claziss@gmail.com>
 
-	* opcode/sparc.h (enum sparc_opcode_arch_val): Move
-	SPARC_OPCODE_ARCH_MAX into the enum.
+	* opcode/arc.h (FASTMATH): Move it from insn_class_t to
+	insn_subclass_t enum.
 
-2016-06-28  Richard Sandiford  <richard.sandiford@arm.com>
+2019-08-22  Alan Modra  <amodra@gmail.com>
 
-	* opcode/aarch64.h (aarch64_opnd_info): Change index fields to int64_t.
+	* elf/arm.h (ARM_GET_SYM_CMSE_SPCL, ARM_SET_SYM_CMSE_SPCL): Delete.
 
-2016-06-28  Maciej W. Rozycki  <macro@imgtec.com>
+2019-08-09  Mihailo Stojanovic  <mihailo.stojanovic@rt-rk.com>
 
-	* elf/mips.h (R_MIPS16_PC16_S1): New relocation.
+	* elf/mips.h (SHT_GNU_XHASH): New define.
+	(DT_GNU_XHASH): New define.
 
-2016-06-25  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-08-08  Yoshinori Sato  <ysato@users.sourceforge.jp>
 
-	* elf/xtensa.h (xtensa_make_property_section): New prototype.
+	* opcode/h8300.h (EXPAND_UNOP_EXTENDED_B): Add MODEL.
+	(EXPAND_UNOP_EXTENDED_W): Likewise.
+	(EXPAND_UNOP_EXTENDED_L): Likewise.
+	(struct h8_opcode h8_opcodes): Likewise.
+	(struct h8_opcode h8_opcodes): tas / ldm / stm supported H8S or
+	later.
 
-2016-06-24  John Baldwin  <jhb@FreeBSD.org>
+2019-07-24  Claudiu Zissulescu  <claziss@synopsys.com>
 
-	* elf/common.h (AT_FREEBSD_EXECPATH, AT_FREEBSD_CANARY)
-	(AT_FREEBSD_CANARYLEN, AT_FREEBSD_OSRELDATE, AT_FREEBSD_NCPUS)
-	(AT_FREEBSD_PAGESIZES, AT_FREEBSD_PAGESIZESLEN)
-	(AT_FREEBSD_TIMEKEEP, AT_FREEBSD_STACKPROT): Define.
+	* opcode/arc.h (FASTMATH): Add.
+	(SWITCH): Likewise.
 
-2016-06-23  Graham Markall  <graham.markall@embecosm.com>
+2019-07-24  Alan Modra  <amodra@gmail.com>
 
-	* opcode/arc.h: Make insn_class_t alphabetical again.
+	* elf/internal.h (ELF_SECTION_IN_SEGMENT_1): Exclude non-alloc
+	sections in GNU_MBIND segments.
 
-2016-06-22  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-07-23  Omar Majid  <omajid@redhat.com>
 
-	* elf/dlx.h: Wrap in extern C.
-	* elf/xtensa.h: Likewise.
-	* opcode/arc.h: Likewise.
+	* coff/i386.h (IMAGE_FILE_MACHINE_NATIVE_APPLE_OVERRIDE): Define.
+	(IMAGE_FILE_MACHINE_NATIVE_FREEBSD_OVERRIDE): Define.
+	(IMAGE_FILE_MACHINE_NATIVE_LINUX_OVERRIDE): Define.
+	(IMAGE_FILE_MACHINE_NATIVE_NETBSD_OVERRIDE): Define.
+	(I386_APPLE_MAGIC): Define.
+	(I386_FREEBSD_MAGIC): Define.
+	(I386_LINUX_MAGIC): Define.
+	(I386_NETBSD_MAGIC): Define.
+	(I386BADMAG): Extend macro to allow new magic numbers.
+	* coff/x86_64.h (IMAGE_FILE_MACHINE_NATIVE_APPLE_OVERRIDE): Define.
+	(IMAGE_FILE_MACHINE_NATIVE_FREEBSD_OVERRIDE): Define.
+	(IMAGE_FILE_MACHINE_NATIVE_LINUX_OVERRIDE): Define.
+	(IMAGE_FILE_MACHINE_NATIVE_NETBSD_OVERRIDE): Define.
+	(AMD64_APPLE_MAGIC): Define.
+	(AMD64_FREEBSD_MAGIC): Define.
+	(AMD64_LINUX_MAGIC): Define.
+	(AMD64_NETBSD_MAGIC): Define.
+	(AMD64BADMAG): Extend macro to allow new magic numbers.
 
-2016-06-22  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-07-19  Alan Modra  <amodra@gmail.com>
 
-	* opcode/tilegx.h: Move TILEGX_NUM_PIPELINE_ENCODINGS into
-	tilegx_pipeline.
+	* elf/ppc64.h (R_PPC64_TPREL34, R_PPC64_DTPREL34),
+	(R_PPC64_GOT_TLSGD34, R_PPC64_GOT_TLSLD34),
+	(R_PPC64_GOT_TPREL34, R_PPC64_GOT_DTPREL34): Define.
+	(IS_PPC64_TLS_RELOC): Include new tls relocs.
 
-2016-06-21  Graham Markall  <graham.markall@embecosm.com>
+2019-07-18  Nick Alcock  <nick.alcock@oracle.com>
 
-	* opcode/arc.h: Add nps400 extension and instruction
-	subclass.
-	Remove ARC_OPCODE_NPS400
-	* elf/arc.h: Remove E_ARC_MACH_NPS400
+	* ctf-api.h (ECTF_NOTFUNC): Fix description.
+	(ctf_func_type_info): New.
+	(ctf_func_type_args): Likewise.
+	(ctf_type_aname_raw): Likewise.
 
-2016-06-17  Jose E. Marchesi  <jose.marchesi@oracle.com>
+2019-07-16  Jan Beulich  <jbeulich@suse.com>
 
-	* opcode/sparc.h (enum sparc_opcode_arch_val): Add
-	SPARC_OPCODE_ARCH_V9C, SPARC_OPCODE_ARCH_V9D,
-	SPARC_OPCODE_ARCH_V9E, SPARC_OPCODE_ARCH_V9V and
-	SPARC_OPCODE_ARCH_V9M.
+	* opcode/i386.h (POP_SEG386_SHORT): New.
 
-2016-06-14  John Baldwin  <jhb@FreeBSD.org>
+2019-07-01  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* opcode/msp430-decode.h (MSP430_Size): Remove.
-	(Msp430_Opcode_Decoded): Change type of size to int.
+	* opcode/aarch64.h (enum aarch64_insn_class): sve_size_013
+	renamed to sve_size_13.
 
-2016-06-11  Alan Modra  <amodra@gmail.com>
+2019-06-19  Nick Alcock <nick.alcock@oracle.com>
+
+	* ctf.h (ctf_slice_t): Make cts_offset and cts_bits unsigned
+	short, so following structures are properly aligned.
 
-	* coff/sparc.h (COFF_ADJUST_SYM_OUT_POST): Define.
+2019-06-14  Szabolcs Nagy  <szabolcs.nagy@arm.com>
 
-2016-06-08  Jose E. Marchesi  <jose.marchesi@oracle.com>
+	* elf/aarch64.h (R_AARCH64_P32_MOVW_PREL_G0): Define.
+	(R_AARCH64_P32_MOVW_PREL_G0_NC): Define.
+	(R_AARCH64_P32_MOVW_PREL_G1): Define.
+
+2019-06-03  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf.h (ctf_enum.cte_value): Fix type to int32_t.
+
+2019-05-29  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_sect_t): Drop cts_type, cts_flags, and cts_offset.
+	(ctf_id_t): This is now an unsigned type.
+	(CTF_ERR): Cast it to ctf_id_t.  Note that it should only be used
+	for ctf_id_t-returning functions.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_dump_decorate_f): New.
+	(ctf_dump_state_t): new.
+	(ctf_dump): New.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_label_f): New.
+	(ctf_label_set): New.
+	(ctf_label_get): New.
+	(ctf_label_topmost): New.
+	(ctf_label_info): New.
+	(ctf_label_iter): New.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_version): New.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_func_info): New.
+	(ctf_func_args): Likewise.
+	(ctf_lookup_by_symbol): Likewise.
+	(ctf_lookup_by_symbol): Likewise.
+	(ctf_lookup_variable): Likewise.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_visit_f): New definition.
+	(ctf_member_f): Likewise.
+	(ctf_enum_f): Likewise.
+	(ctf_variable_f): Likewise.
+	(ctf_type_f): Likewise.
+	(ctf_type_isparent): Likewise.
+	(ctf_type_ischild): Likewise.
+	(ctf_type_resolve): Likewise.
+	(ctf_type_aname): Likewise.
+	(ctf_type_lname): Likewise.
+	(ctf_type_name): Likewise.
+	(ctf_type_sizee): Likewise.
+	(ctf_type_align): Likewise.
+	(ctf_type_kind): Likewise.
+	(ctf_type_reference): Likewise.
+	(ctf_type_pointer): Likewise.
+	(ctf_type_encoding): Likewise.
+	(ctf_type_visit): Likewise.
+	(ctf_type_cmp): Likewise.
+	(ctf_type_compat): Likewise.
+	(ctf_member_info): Likewise.
+	(ctf_array_info): Likewise.
+	(ctf_enum_name): Likewise.
+	(ctf_enum_value): Likewise.
+	(ctf_member_iter): Likewise.
+	(ctf_enum_iter): Likewise.
+	(ctf_type_iter): Likewise.
+	(ctf_variable_iter): Likewise.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (struct bfd): New forward.
+	(ctf_fdopen): New.
+	(ctf_bfdopen): Likewise.
+	(ctf_open): Likewise.
+	(ctf_arc_open): Likewise.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf.h (CTFA_MAGIC): New.
+	(struct ctf_archive): New.
+	(struct ctf_archive_modent): Likewise.
+	* ctf-api.h (ctf_archive_member_f): New.
+	(ctf_archive_raw_member_f): Likewise.
+	(ctf_arc_write): Likewise.
+	(ctf_arc_close): Likewise.
+	(ctf_arc_open_by_name): Likewise.
+	(ctf_archive_iter): Likewise.
+	(ctf_archive_raw_iter): Likewise.
+	(ctf_get_arc): Likewise.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_file_close): New declaration.
+	(ctf_getdatasect): Likewise.
+	(ctf_parent_file): Likewise.
+	(ctf_parent_name): Likewise.
+	(ctf_parent_name_set): Likewise.
+	(ctf_import): Likewise.
+	(ctf_setmodel): Likewise.
+	(ctf_getmodel): Likewise.
+	(ctf_setspecific): Likewise.
+	(ctf_getspecific): Likewise.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (zlib.h): New include.
+	(ctf_sect_t): New.
+	(ctf_sect_names_t): Likewise.
+	(ctf_encoding_t): Likewise.
+	(ctf_membinfo_t): Likewise.
+	(ctf_arinfo_t): Likewise.
+	(ctf_funcinfo_t): Likewise.
+	(ctf_lblinfo_t): Likewise.
+	(ctf_snapshot_id_t): Likewise.
+	(CTF_FUNC_VARARG): Likewise.
+	(ctf_simple_open): Likewise.
+	(ctf_bufopen): Likewise.
+	(ctf_create): Likewise.
+	(ctf_add_array): Likewise.
+	(ctf_add_const): Likewise.
+	(ctf_add_enum_encoded): Likewise.
+	(ctf_add_enum): Likewise.
+	(ctf_add_float): Likewise.
+	(ctf_add_forward): Likewise.
+	(ctf_add_function): Likewise.
+	(ctf_add_integer): Likewise.
+	(ctf_add_slice): Likewise.
+	(ctf_add_pointer): Likewise.
+	(ctf_add_type): Likewise.
+	(ctf_add_typedef): Likewise.
+	(ctf_add_restrict): Likewise.
+	(ctf_add_struct): Likewise.
+	(ctf_add_union): Likewise.
+	(ctf_add_struct_sized): Likewise.
+	(ctf_add_union_sized): Likewise.
+	(ctf_add_volatile): Likewise.
+	(ctf_add_enumerator): Likewise.
+	(ctf_add_member): Likewise.
+	(ctf_add_member_offset): Likewise.
+	(ctf_add_member_encoded): Likewise.
+	(ctf_add_variable): Likewise.
+	(ctf_set_array): Likewise.
+	(ctf_update): Likewise.
+	(ctf_snapshot): Likewise.
+	(ctf_rollback): Likewise.
+	(ctf_discard): Likewise.
+	(ctf_write): Likewise.
+	(ctf_gzwrite): Likewise.
+	(ctf_compress_write): Likewise.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_errno): New declaration.
+	(ctf_errmsg): Likewise.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h (ctf_setdebug): New.
+	(ctf_getdebug): Likewise.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf-api.h: New file.
+
+2019-05-28  Nick Alcock  <nick.alcock@oracle.com>
+
+	* ctf.h: New file.
+
+2019-05-24  Szabolcs Nagy  <szabolcs.nagy@arm.com>
+
+	* elf/aarch64.h (DT_AARCH64_VARIANT_PCS): Define.
+	(STO_AARCH64_VARIANT_PCS): Define.
+
+2019-05-24  Alan Modra  <amodra@gmail.com>
 
-	* opcode/sparc.h: Add missing documentation for hyperprivileged
-	registers in rd (%) and rs1 ($).
+	* elf/ppc64.h (R_PPC64_PLTSEQ_NOTOC, R_PPC64_PLTCALL_NOTOC),
+	(R_PPC64_PCREL_OPT, R_PPC64_D34, R_PPC64_D34_LO, R_PPC64_D34_HI30),
+	(R_PPC64_D34_HA30, R_PPC64_PCREL34, R_PPC64_GOT_PCREL34),
+	(R_PPC64_PLT_PCREL34, R_PPC64_PLT_PCREL34_NOTOC),
+	(R_PPC64_ADDR16_HIGHER34, R_PPC64_ADDR16_HIGHERA34),
+	(R_PPC64_ADDR16_HIGHEST34, R_PPC64_ADDR16_HIGHESTA34),
+	(R_PPC64_REL16_HIGHER34, R_PPC64_REL16_HIGHERA34),
+	(R_PPC64_REL16_HIGHEST34, R_PPC64_REL16_HIGHESTA34),
+	(R_PPC64_D28, R_PPC64_PCREL28): Define.
 
-2016-06-07  Alan Modra  <amodra@gmail.com>
+2019-05-24  Peter Bergner  <bergner@linux.ibm.com>
+	    Alan Modra  <amodra@gmail.com>
 
-	* elf/ppc.h (APUINFO_SECTION_NAME, APUINFO_LABEL, PPC_APUINFO_ISEL,
-	PPC_APUINFO_PMR, PPC_APUINFO_RFMCI, PPC_APUINFO_CACHELCK,
-	PPC_APUINFO_SPE, PPC_APUINFO_EFS, PPC_APUINFO_BRLOCK,
-	PPC_APUINFO_VLE: Define.
+	* dis-asm.h (WIDE_OUTPUT): Define.
+	* opcode/ppc.h (prefix_opcodes, prefix_num_opcodes): Declare.
+	(PPC_OPCODE_POWERXX, PPC_GET_PREFIX, PPC_GET_SUFFIX),
+	(PPC_PREFIX_P, PPC_PREFIX_SEG): Define.
 
-2016-06-07  Matthew Wahab  <matthew.wahab@arm.com>
+2019-05-23  Jose E. Marchesi  <jose.marchesi@oracle.com>
 
-	* opcode/arm.h (ARM_EXT2_RAS): New.  Also align preceding
-	entries.
-	(ARM_AEXT_V8_2A): Add ARM_EXT2_RAS.
+	* elf/bpf.h: New file.
 
-2016-06-02  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-05-16  Andre Vieira  <andre.simoesdiasvieira@arm.com>
 
-	* opcode/arc.h (MAX_INSN_ARGS): Increase to 16.
-	(struct arc_long_opcode): New structure.
-	(arc_long_opcodes): Declare.
-	(arc_num_long_opcodes): Declare.
+	* elf/arm.h (Tag_MVE_arch): Define new enum value.
+	* opcode/arm.h (FPU_MVE, FPU_MVE_FP): New MACROs for new features.
 
-2016-06-01  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* elf/mips.h: Add extern "C".
-	* elf/sh.h: Likewise.
-	* opcode/d10v.h: Likewise.
-	* opcode/d30v.h: Likewise.
-	* opcode/ia64.h: Likewise.
-	* opcode/mips.h: Likewise.
-	* opcode/ppc.h: Likewise.
-	* opcode/sparc.h: Likewise.
-	* opcode/tic6x.h: Likewise.
-	* opcode/v850.h: Likewise.
+	* opcode/aarch64.h (enum aarch64_opnd): New SVE_SHLIMM_UNPRED_22
+	operand.
 
-2016-05-28  Alan Modra  <amodra@gmail.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* bfdlink.h (struct bfd_link_callbacks): Update comments.
-	Return void from multiple_definition, multiple_common,
-	add_to_set, constructor, warning, undefined_symbol,
-	reloc_overflow, reloc_dangerous and unattached_reloc.
+	* opcode/aarch64.h (enum aarch64_insn_class): Add sve_size_tsz_bhs
+	iclass.
 
-2016-05-26  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* opcode/metag.h: wrap declarations in extern "C".
+	* opcode/aarch64.h (enum aarch64_opnd): New SVE_Zm4_11_INDEX operand.
 
-2016-05-23  Claudiu Zissulescu  <claziss@synopsys.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* opcode/arc.h (insn_subclass_t): Add COND.
-	(flag_class_t): Add F_CLASS_EXTEND.
+	* opcode/aarch64.h (enum aarch64_insn_class): Add sve_shift_tsz_bhsd
+	iclass.
 
-2016-05-23  Cupertino Miranda  <cmiranda@synopsys.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* opcode/arc.h (struct arc_opcode): Renamed attribute class to
-	insn_class.
-	(struct arc_flag_class): Renamed attribute class to flag_class.
+	* opcode/aarch64.h (enum aarch64_opnd): New SVE_SHRIMM_UNPRED_22
+	operand.
+	(enum aarch64_insn_class): Add sve_shift_tsz_hsd iclass.
 
-2016-05-23  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* opcode/tic54x.h (struct symbol_): typedef to tic54x_symbol instead of
-	plain symbol.
+	* opcode/aarch64.h (enum aarch64_insn_class): Add sve_size_013 iclass.
 
-2016-04-29  Tom Tromey  <tom@tromey.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* dwarf2.h (enum dwarf_source_language) <DW_LANG_Rust,
-	DW_LANG_Rust_old>: New constants.
+	* opcode/aarch64.h (enum aarch64_insn_class): Add sve_size_bh iclass.
 
-2016-05-11  Andrew Bennett  <andrew.bennett@imgtec.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* elf/mips.h (AFL_ASE_DSPR3): New macro.
-	(AFL_ASE_MASK): Update to include AFL_ASE_DSPR3.
-	* opcode/mips.h (ASE_DSPR3): New macro.
+	* opcode/aarch64.h (enum aarch64_insn_class): Add sve_size_sd2 iclass.
 
-2016-05-10  Thomas Preud'homme  <thomas.preudhomme@arm.com>
-	    Nick Clifton  <nickc@redhat.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* arm.h (enum arm_st_branch_type): Add new ST_BRANCH_ENUM_SIZE
-	enumerator.
-	(NUM_ENUM_ARM_ST_BRANCH_TYPE_BITS): New macro.
-	(ENUM_ARM_ST_BRANCH_TYPE_BITMASK): Likewise.
-	(ARM_SYM_BRANCH_TYPE): Replace by ...
-	(ARM_GET_SYM_BRANCH_TYPE): This and ...
-	(ARM_SET_SYM_BRANCH_TYPE): This in two versions depending on whether
-	BFD_ASSERT is defined or not.
+	* opcode/aarch64.h (enum aarch64_opnd): New SVE_ADDR_ZX operand.
 
-2016-05-10  Thomas Preud'homme  <thomas.preudhomme@arm.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* elf/arm.h (Tag_DSP_extension): Define.
+	* opcode/aarch64.h (enum aarch64_opnd): New SVE_Zm3_11_INDEX operand.
 
-2016-05-10  Thomas Preud'homme  <thomas.preudhomme@arm.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* arm.h (ARM_FSET_CPU_SUBSET): Define macro.
+	* opcode/aarch64.h (enum aarch64_insn_class): Add sve_size_hsd2 iclass.
 
-2016-05-10  Thomas Preud'homme  <thomas.preudhomme@arm.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* opcode/arm.h (ARM_EXT2_V8M_MAIN): new feature bit.
-	(ARM_AEXT2_V8M_MAIN): New architecture extension feature set.
-	(ARM_ARCH_V8M_MAIN): Use ARM_AEXT2_V8M_MAIN instead of ARM_AEXT2_V8M
-	for the high core bits.
+	* opcode/aarch64.h (enum aarch64_opnd): New SVE_IMM_ROT3 operand.
 
-2016-05-03  Claudiu Zissulescu  <claziss@synopsys.com>
+2019-05-09  Matthew Malcomson  <matthew.malcomson@arm.com>
 
-	* opcode/arc.h (ARC_SYNTAX_1OP): Declare
-	(ARC_SYNTAX_NOP): Likewsie.
-	(ARC_OP1_MUST_BE_IMM): Update defined value.
-	(ARC_OP1_IMM_IMPLIED): Likewise.
-	(arg_32bit_rc, arg_32bit_u6, arg_32bit_limm): Declare.
+	* opcode/aarch64.h (AARCH64_FEATURE_SVE2
+	AARCH64_FEATURE_SVE2_AES, AARCH64_FEATURE_SVE2_BITPERM,
+	AARCH64_FEATURE_SVE2_SM4, AARCH64_FEATURE_SVE2_SHA3): New
+	feature macros.
 
-2016-04-28  Nick Clifton  <nickc@redhat.com>
+2019-05-06  Andrew Bennett  <andrew.bennett@imgtec.com>
+	    Faraz Shahbazker  <fshahbazker@wavecomp.com>
 
-	PR target/19722
-	* opcode/aarch64.h (struct aarch64_opcode): Add verifier field.
+	* opcode/mips.h (ASE_EVA_R6): New macro.
+	(M_LLWPE_AB, M_SCWPE_AB): New enum values.
 
-2016-04-27  Alan Modra  <amodra@gmail.com>
+2019-05-01  Sudakshina Das  <sudi.das@arm.com>
 
-	* bfdlink.h (struct bfd_link_hash_entry): Add "section" field to
-	undef.  Formatting.
+	* opcode/aarch64.h (AARCH64_FEATURE_TME): New.
+	(enum aarch64_opnd): Add AARCH64_OPND_TME_UIMM16.
 
-2016-04-21  Nick Clifton  <nickc@redhat.com>
+2019-04-26  Andrew Bennett  <andrew.bennett@imgtec.com>
+	    Faraz Shahbazker  <fshahbazker@wavecomp.com>
 
-	* bfdlink.h: Add prototype for bfd_link_check_relocs.
+	* opcode/mips.h (M_LLWP_AB, M_LLDP_AB): New enum values.
+	(M_SCWP_AB, M_SCDP_AB): Likewise.
 
-2016-04-20  H.J. Lu  <hongjiu.lu@intel.com>
+2019-04-25  Maciej W. Rozycki  <macro@linux-mips.org>
 
-	* bfdlink.h (bfd_link_info): Add check_relocs_after_open_input.
+	* opcode/mips.h: Update comment for MIPS32 CODE20 operand.
 
-2016-04-20  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-04-15  Sudakshina Das  <sudi.das@arm.com>
 
-	* elf/arc-reloc.def (ARC_NPS_CMEM16): Add ME modifier to formula.
+	* elf/arm.h (START_RELOC_NUMBERS): New entry for R_ARM_THM_BF12.
 
-2016-04-19  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-04-15  Sudakshina Das  <sudi.das@arm.com>
 
-	* opcode/arc.h (MAX_INSN_ARGS): Increase 6 to 8.
+	* elf/arm.h (START_RELOC_NUMBERS): New entry for R_ARM_THM_BF18.
 
-2016-04-19  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-04-15  Sudakshina Das  <sudi.das@arm.com>
 
-	* opcode/arc.h (insn_class_t): Add NET and ACL class.
+	* elf/arm.h (START_RELOC_NUMBERS): New entry for R_ARM_THM_BF16.
 
-2016-04-14  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-04-15  Thomas Preud'homme  <thomas.preudhomme@arm.com>
 
-	* elf/arc-reloc.def: Add ARC_NPS_CMEM16 reloc.
-	* opcode/arc.h (NPS_CMEM_HIGH_VALUE): Define.
+	* elf/arm.h (TAG_CPU_ARCH_V8_1M_MAIN): new macro.
+	(MAX_TAG_CPU_ARCH): Set value to above macro.
+	* opcode/arm.h (ARM_EXT2_V8_1M_MAIN): New macro.
+	(ARM_AEXT_V8_1M_MAIN): Likewise.
+	(ARM_AEXT2_V8_1M_MAIN): Likewise.
+	(ARM_ARCH_V8_1M_MAIN): Likewise.
 
-2016-04-12  Claudiu Zissulescu  <claziss@synopsys.com>
+2019-04-11  Sudakshina Das  <sudi.das@arm.com>
 
-	* opcode/arc.h (flag_class_t): Update.
-	(ARC_OPCODE_NONE): Define.
-	(ARC_OPCODE_ARCALL): Likewise.
-	(ARC_OPCODE_ARCFPX): Likewise.
-	(ARC_REGISTER_READONLY): Likewise.
-	(ARC_REGISTER_WRITEONLY): Likewise.
-	(ARC_REGISTER_NOSHORT_CUT): Likewise.
-	(arc_aux_reg): Add cpu.
+	* opcode/aarch64.h (enum aarch64_opnd): Add AARCH64_OPND_Rt_SP.
 
-2016-04-12  Claudiu Zissulescu  <claziss@synopsys.com>
+2019-04-08  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* opcode/arc.h (arc_num_opcodes): Remove.
-	(ARC_SYNTAX_3OP, ARC_SYNTAX_2OP, ARC_OP1_MUST_BE_IMM)
-	(ARC_OP1_IMM_IMPLIED, ARC_SUFFIX_NONE, ARC_SUFFIX_COND)
-	(ARC_SUFFIX_FLAG): Define.
-	(flags_none, flags_f, flags_cc, flags_ccf): Declare.
-	(arg_none, arg_32bit_rarbrc, arg_32bit_zarbrc, arg_32bit_rbrbrc)
-	(arg_32bit_rarbu6, arg_32bit_zarbu6, arg_32bit_rbrbu6)
-	(arg_32bit_rbrbs12, arg_32bit_ralimmrc, arg_32bit_rarblimm)
-	(arg_32bit_zalimmrc, arg_32bit_zarblimm, arg_32bit_rbrblimm)
-	(arg_32bit_ralimmu6, arg_32bit_zalimmu6, arg_32bit_zalimms12)
-	(arg_32bit_ralimmlimm, arg_32bit_zalimmlimm, arg_32bit_rbrc)
-	(arg_32bit_zarc, arg_32bit_rbu6, arg_32bit_zau6, arg_32bit_rblimm)
-	(arg_32bit_zalimm, arg_32bit_limmrc, arg_32bit_limmu6)
-	(arg_32bit_limms12, arg_32bit_limmlimm): Likewise.
+	* elf/common.h (GNU_PROPERTY_X86_ISA_1_AVX512_BF16): New.
 
-2016-04-05  Claudiu Zissulescu  <claziss@synopsys.com>
+2019-04-07  Alan Modra  <amodra@gmail.com>
 
-	* opcode/arc.h (DPA, DPX, SPX): New subclass enums.
-	(ARC_FPUDA): Define.
-	(arc_aux_reg): Add new field.
+	Merge from gcc.
+	2019-04-03  Vineet Gupta  <vgupta@synopsys.com>
+	PR89877
+	* longlong.h [__arc__] (add_ssaaaa): Add cc clobber.
+	(sub_ddmmss): Likewise.
 
-2016-04-05  Cupertino Miranda  <cmiranda@synopsys.com>
+2019-04-06  H.J. Lu  <hongjiu.lu@intel.com>
 
-	* opcode/arc-func.h (replace_bits24): Changed.
-	(replace_bits24_be): Created.
+	* bfdlink.h (bfd_link_info): Remove x86-specific linker options.
 
-2016-03-29  Claudiu Zissulescu  <claziss@synopsys.com>
+2019-04-01  Andre Vieira  <andre.simoesdiasvieira@arm.com>
 
-	* opcode/arc.h (insn_subclass_t): Add QUARKSE subclass.
-	(FIELDA, FIELDB, FIELDC, FIELDF, FIELDQ, INSN3OP, INSN2OP)
-	(INSN2OP, INSN3OP_ABC, INSN3OP_ALC, INSN3OP_ABL, INSN3OP_ALL)
-	(INSN3OP_0BC, INSN3OP_0LC, INSN3OP_0BL, INSN3OP_0LL, INSN3OP_ABU)
-	(INSN3OP_ALU, INSN3OP_0BU, INSN3OP_0LU, INSN3OP_BBS, INSN3OP_0LS)
-	(INSN3OP_CBBC, INSN3OP_CBBL, INSN3OP_C0LC, INSN3OP_C0LL)
-	(INSN3OP_CBBU, INSN3OP_C0LU, MINSN3OP_ABC, MINSN3OP_ALC)
-	(MINSN3OP_ABL, MINSN3OP_ALL, MINSN3OP_0BC, MINSN3OP_0LC)
-	(MINSN3OP_0BL, MINSN3OP_0LL, MINSN3OP_ABU, MINSN3OP_ALU)
-	(MINSN3OP_0BU, MINSN3OP_0LU, MINSN3OP_BBS, MINSN3OP_0LS)
-	(MINSN3OP_CBBC, MINSN3OP_CBBL, MINSN3OP_C0LC, MINSN3OP_C0LL)
-	(MINSN3OP_CBBU, MINSN3OP_C0LU, INSN2OP_BC, INSN2OP_BL, INSN2OP_0C)
-	(INSN2OP_0L INSN2OP_BU, INSN2OP_0U, MINSN2OP_BC, MINSN2OP_BL)
-	(MINSN2OP_0C, MINSN2OP_0L, MINSN2OP_BU, MINSN2OP_0U): Define.
+	* opcode/arm.h (FPU_NEON_ARMV8_1): New.
+	(FPU_ARCH_NEON_VFP_ARMV8_1): Use FPU_NEON_ARMV8_1.
+	(FPU_ARCH_CRYPTO_NEON_VFP_ARMV8_1): Likewise.
+	(FPU_ARCH_DOTPROD_NEON_VFP_ARMV8): Likewise.
+	(FPU_ARCH_NEON_VFP_ARMV8_2_FP16): New.
+	(FPU_ARCH_NEON_VFP_ARMV8_2_FP16FML): New.
+	(FPU_ARCH_NEON_VFP_ARMV8_4_FP16FML): New.
+	(FPU_ARCH_CRYPTO_NEON_VFP_ARMV8_4): New.
 
-2016-03-22  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-03-28  Alan Modra  <amodra@gmail.com>
 
-	* opcode/i960.h: Add const qualifiers.
-	* opcode/tic4x.h (struct tic4x_inst): Likewise.
+	PR 24390
+	* opcode/ppc.h (PPC_OPERAND_CR_REG): Comment.
 
-2016-03-21  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-03-25  Tamar Christina  <tamar.christina@arm.com>
 
-	* opcodes/arc.h (insn_class_t): Add BITOP type.
+	* dis-asm.h (struct disassemble_info): Add stop_offset.
 
-2016-03-21  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-03-13  Sudakshina Das  <sudi.das@arm.com>
 
-	* opcode/arc.h (flag_class_t): Remove all old flag classes, add 3
-	new classes instead.
+	* elf/aarch64.h (DT_AARCH64_PAC_PLT): New.
 
-2016-03-21  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-03-13  Sudakshina Das  <sudi.das@arm.com>
+	    Szabolcs Nagy  <szabolcs.nagy@arm.com>
 
-	* elf/arc.h (E_ARC_MACH_NPS400): Define.
-	* opcode/arc.h (ARC_OPCODE_NPS400): Define.
+	* elf/aarch64.h (DT_AARCH64_BTI_PLT): New.
 
-2016-03-21  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-03-13  Sudakshina Das  <sudi.das@arm.com>
 
-	* elf/arc.h (EF_ARC_CPU_GENERIC): Delete.  Update related comment.
+	* elf/common.h (GNU_PROPERTY_AARCH64_FEATURE_1_AND): New.
+	(GNU_PROPERTY_AARCH64_FEATURE_1_BTI): New.
+	(GNU_PROPERTY_AARCH64_FEATURE_1_PAC): New.
 
-2016-03-21  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-02-20  Alan Hayward  <alan.hayward@arm.com>
 
-	* elf/arc.h (EF_ARC_MACH): Delete.
-	(EF_ARC_MACH_MSK): Remove out of date comment.
+	* elf/common.h (NT_ARM_PAC_MASK): Add define.
 
-2016-03-21  Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-02-15  Saagar Jha  <saagar@saagarjha.com>
 
-	* opcode/arc.h (ARC_OPCODE_BASE): Delete.
+	* mach-o/loader.h: Use new OS names in comments.
 
-2016-03-15  H.J. Lu  <hongjiu.lu@intel.com>
+2019-02-11  Philippe Waroquiers  <philippe.waroquiers@skynet.be>
 
-	PR ld/19807
-	* bfdlink.h (bfd_link_info): Add no_reloc_overflow_check.
+	* splay-tree.h (splay_tree_delete_key_fn): Update comment.
+	(splay_tree_delete_value_fn): Likewise.
 
-2016-03-08  Cupertino Miranda  <Cupertino.Miranda@synopsys.com>
-	    Andrew Burgess  <andrew.burgess@embecosm.com>
+2019-01-31  Andreas Krebbel  <krebbel@linux.ibm.com>
 
-	* elf/arc-reloc.def: Add a call to ME within the formula for each
-	relocation that requires middle-endian correction.
+	* opcode/s390.h (enum s390_opcode_cpu_val): Add
+	S390_OPCODE_ARCH13.
 
-2016-03-07  Trevor Saunders  <tbsaunde+binutils@tbsaunde.org>
+2019-01-25  Sudakshina Das  <sudi.das@arm.com>
+	    Ramana Radhakrishnan  <ramana.radhakrishnan@arm.com>
 
-	* opcode/dlx.h (struct dlx_opcode): Add const qualifiers.
-	* opcode/h8300.h (struct h8_opcode): Likewise.
-	* opcode/hppa.h (struct pa_opcode): Likewise.
-	* opcode/msp430.h: Likewise.
-	* opcode/spu.h (struct spu_opcode): Likewise.
-	* opcode/tic30.h (struct _register): Likewise.
-	* opcode/tic4x.h (struct tic4x_register): Likewise.
-	(struct tic4x_cond): Likewise.
-	(struct tic4x_indirect): Likewise.
-	(struct tic4x_inst): Likewise.
-	* opcode/visium.h (struct reg_entry): Likewise.
+	* opcode/aarch64.h (enum aarch64_opnd): Remove
+	AARCH64_OPND_ADDR_SIMPLE_2.
+	(enum aarch64_insn_class): Remove ldstgv_indexed.
 
-2016-03-04  Matthew Wahab  <matthew.wahab@arm.com>
+2019-01-22  Tom Tromey  <tom@tromey.com>
 
-	* arm.h (ARM_ARCH_V8_1A): Add FPU_NEON_EXT_RDMA.
-	(ARM_CPU_HAS_FEATURE): Add comment.
+	* coff/ecoff.h: Include coff/sym.h.
 
-2016-03-03  Than McIntosh <thanm@google.com>
+2018-06-24  Nick Clifton  <nickc@redhat.com>
 
-	* plugin-api.h: Add new hooks to the plugin transfer vector to
-	to support querying section alignment and section size.
-	(ld_plugin_get_input_section_alignment): New hook.
-	(ld_plugin_get_input_section_size): New hook.
-	(ld_plugin_tag): Add LDPT_GET_INPUT_SECTION_ALIGNMENT
-	and LDPT_GET_INPUT_SECTION_SIZE.
-	(ld_plugin_tv): Add tv_get_input_section_alignment and
-	tv_get_input_section_size.
+	2.32 branch created.
 
-2016-03-03  Evgenii Stepanov  <eugenis@google.com>
+2019-01-16  Kito Cheng  <kito@andestech.com>
 
-	* plugin-api.h (enum ld_plugin_tag): Add LDPT_GET_SYMBOLS_V3.
+	* elf/riscv.h (SHT_RISCV_ATTRIBUTES): Define.
+	(Tag_RISCV_arch): Likewise.
+	(Tag_RISCV_priv_spec): Likewise.
+	(Tag_RISCV_priv_spec_minor): Likewise.
+	(Tag_RISCV_priv_spec_revision): Likewise.
+	(Tag_RISCV_unaligned_access): Likewise.
+	(Tag_RISCV_stack_align): Likewise.
 
-2016-02-26  H.J. Lu  <hongjiu.lu@intel.com>
+2019-01-14  Pavel I. Kryukov  <kryukov@frtk.ru>
 
-	PR ld/19645
-	* bfdlink.h (bfd_link_elf_stt_common): New enum.
-	(bfd_link_info): Add elf_stt_common.
+	* dis-asm.h: include <string.h>
 
-2016-02-26  H.J. Lu  <hongjiu.lu@intel.com>
+2019-01-10  Nick Clifton  <nickc@redhat.com>
 
-	PR ld/19636
-	PR ld/19704
-	PR ld/19719
-	* bfdlink.h (bfd_link_info): Add dynamic_undefined_weak.
+	* Merge from GCC:
+	2018-12-22  Jason Merrill  <jason@redhat.com>
 
-2016-02-19  Matthew Wahab  <matthew.wahab@arm.com>
-	    Jiong Wang  <jiong.wang@arm.com>
+	* demangle.h: Remove support for ancient GNU (pre-3.0), Lucid,
+	ARM, HP, and EDG demangling styles.
 
-	* opcode/arm.h (ARM_EXT2_FP16_INSN): New.
+2019-01-09  Sandra Loosemore  <sandra@codesourcery.com>
 
-2016-02-10  Claudiu Zissulescu  <claziss@synopsys.com>
-	    Janek van Oirschot  <jvanoirs@synopsys.com>
+	Merge from GCC:
+	PR other/16615
 
-	* opcode/arc.h (arc_opcode arc_relax_opcodes)
-	(arc_num_relax_opcodes): Declare.
+	* libiberty.h: Mechanically replace "can not" with "cannot".
+	* plugin-api.h: Likewise.
 
-2016-02-09  Nick Clifton  <nickc@redhat.com>
+2018-12-25  Yoshinori Sato <ysato@users.sourceforge.jp>
 
-	* opcode/metag.h (metag_scondtab): Mark as possibly unused.
-	* opcode/nds32.h (nds32_r45map): Likewise.
-	(nds32_r54map): Likewise.
-	* opcode/visium.h (gen_reg_table): Likewise.
-	(fp_reg_table, cc_table, opcode_table): Likewise.
+	* elf/rx.h (EF_RX_CPU_MASK): Update new bits.
+	(E_FLAG_RX_V3): New RXv3 type.
+	* opcode/rx.h (RX_Size): Add double size.
+	(RX_Operand_Type): Add double FPU registers.
+	(RX_Opcode_ID): Add new instuctions.
 
-2016-02-09  Alan Modra  <amodra@gmail.com>
-
-	PR 16583
-	* elf/common.h (AT_SUN_HWCAP): Undef before defining.
-
-2016-02-04  Nick Clifton  <nickc@redhat.com>
-
-	PR target/19561
-	* opcode/msp430.h (IGNORE_CARRY_BIT): New define.
-	(RRUX): Synthesise using case 2 rather than 7.
-
-2016-01-19  John Baldwin  <jhb@FreeBSD.org>
-
-	* elf/common.h (NT_FREEBSD_THRMISC): Define.
-	(NT_FREEBSD_PROCSTAT_PROC): Define.
-	(NT_FREEBSD_PROCSTAT_FILES): Define.
-	(NT_FREEBSD_PROCSTAT_VMMAP): Define.
-	(NT_FREEBSD_PROCSTAT_GROUPS): Define.
-	(NT_FREEBSD_PROCSTAT_UMASK): Define.
-	(NT_FREEBSD_PROCSTAT_RLIMIT): Define.
-	(NT_FREEBSD_PROCSTAT_OSREL): Define.
-	(NT_FREEBSD_PROCSTAT_PSSTRINGS): Define.
-	(NT_FREEBSD_PROCSTAT_AUXV): Define.
-
-2016-01-18  Miranda Cupertino  <Cupertino.Miranda@synopsys.com>
-	    Zissulescu Claudiu  <Claudiu.Zissulescu@synopsys.com>
-
-	* elf/arc-reloc.def (ARC_32, ARC_GOTPC, ARC_TLS_GD_GOT)
-	(ARC_TLS_IE_GOT, ARC_TLS_DTPOFF, ARC_TLS_DTPOFF_S9, ARC_TLS_LE_S9)
-	(ARC_TLS_LE_32): Fixed formula.
-	(ARC_TLS_GD_LD): Use new special function.
-	* opcode/arc-func.h: Changed all the replacement
-	functions to clear the patching bits before doing an or it with the value
-	argument.
-
-2016-01-18  Nick Clifton  <nickc@redhat.com>
-
-	PR ld/19440
-	* coff/internal.h (internal_syment): Use int to hold section
-	number.
-	(N_UNDEF): Cast to int not short.
-	(N_ABS): Likewise.
-	(N_DEBUG): Likewise.
-	(N_TV): Likewise.
-	(P_TV): Likewise.
-
-2016-01-11  Nick Clifton  <nickc@redhat.com>
-
-	Import this change from GCC mainline:
-
-	2016-01-07  Mike Frysinger  <vapier@gentoo.org>
-
-	* longlong.h: Change !__SHMEDIA__ to
-	(!defined (__SHMEDIA__) || !__SHMEDIA__).
-	Change __SHMEDIA__ to defined (__SHMEDIA__) && __SHMEDIA__.
-
-2016-01-06  Maciej W. Rozycki  <macro@imgtec.com>
-
-	* opcode/mips.h: Add a summary of MIPS16 operand codes.
-
-2016-01-05  Mike Frysinger  <vapier@gentoo.org>
-
-	* libiberty.h (dupargv): Change arg to char * const *.
-	(writeargv, countargv): Likewise.
-
-2016-01-01  Alan Modra  <amodra@gmail.com>
+2019-01-01  Alan Modra  <amodra@gmail.com>
 
 	Update year range in copyright notice of all files.
 
-For older changes see ChangeLog-0415, aout/ChangeLog-9115,
-cgen/ChangeLog-0915, coff/ChangeLog-0415, elf/ChangeLog-0415,
-mach-o/ChangeLog-1115, nlm/ChangeLog-9315, opcode/ChangeLog-0415,
-som/ChangeLog-1015, and vms/ChangeLog-1015
+For older changes see ChangeLog-2018
 
-Copyright (C) 2016 Free Software Foundation, Inc.
+Copyright (C) 2019 Free Software Foundation, Inc.
 
 Copying and distribution of this file, with or without modification,
 are permitted in any medium without royalty provided the copyright

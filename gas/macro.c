@@ -1,5 +1,5 @@
 /* macro.c - macro support for gas
-   Copyright (C) 1994-2016 Free Software Foundation, Inc.
+   Copyright (C) 1994-2019 Free Software Foundation, Inc.
 
    Written by Steve and Judy Chamberlain of Cygnus Support,
       sac@cygnus.com
@@ -223,14 +223,13 @@ buffer_and_nest (const char *from, const char *to, sb *ptr,
 	     anyway, there's not an obviously better fix here.  */
 	  if (strncasecmp (ptr->ptr + i, "linefile", 8) == 0)
 	    {
-	      char *saved_input_line_pointer = input_line_pointer;
 	      char saved_eol_char = ptr->ptr[ptr->len];
 
 	      ptr->ptr[ptr->len] = '\0';
-	      input_line_pointer = ptr->ptr + i + 8;
+	      temp_ilp (ptr->ptr + i + 8);
 	      s_app_line (0);
+	      restore_ilp ();
 	      ptr->ptr[ptr->len] = saved_eol_char;
-	      input_line_pointer = saved_input_line_pointer;
 	      ptr->len = line_start;
 	    }
 	}
@@ -285,8 +284,8 @@ getstring (size_t idx, sb *in, sb *acc)
 	{
 	  int nest = 0;
 	  idx++;
-	  while ((in->ptr[idx] != '>' || nest)
-		 && idx < in->len)
+	  while (idx < in->len
+		 && (in->ptr[idx] != '>' || nest))
 	    {
 	      if (in->ptr[idx] == '!')
 		{
@@ -369,13 +368,13 @@ get_any_string (size_t idx, sb *in, sb *out)
     {
       if (in->len > idx + 2 && in->ptr[idx + 1] == '\'' && ISBASE (in->ptr[idx]))
 	{
-	  while (!ISSEP (in->ptr[idx]))
+	  while (idx < in->len && !ISSEP (in->ptr[idx]))
 	    sb_add_char (out, in->ptr[idx++]);
 	}
       else if (in->ptr[idx] == '%' && macro_alternate)
 	{
 	  offsetT val;
-	  char buf[20];
+	  char buf[64];
 
 	  /* Turns the next expression into a string.  */
 	  /* xgettext: no-c-format */
@@ -815,7 +814,7 @@ macro_expand_body (sb *in, sb *out, formal_entry *formals,
 	    }
 	  else
 	    {
-	      /* Permit macro parameter substition delineated with
+	      /* Permit macro parameter substitution delineated with
 		 an '&' prefix and optional '&' suffix.  */
 	      src = sub_actual (src + 1, in, &t, formal_hash, '&', out, 0);
 	    }
@@ -842,7 +841,7 @@ macro_expand_body (sb *in, sb *out, formal_entry *formals,
 	    {
 	      /* Sub in the macro invocation number.  */
 
-	      char buffer[10];
+	      char buffer[12];
 	      src++;
 	      sprintf (buffer, "%d", macro_number);
 	      sb_add_string (out, buffer);
@@ -1301,7 +1300,7 @@ delete_macro (const char *name)
       free_macro (macro);
     }
   else
-    as_warn (_("Attempt to purge non-existant macro `%s'"), copy);
+    as_warn (_("Attempt to purge non-existing macro `%s'"), copy);
   free (copy);
 }
 
