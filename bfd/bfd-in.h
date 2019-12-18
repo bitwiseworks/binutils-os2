@@ -1,6 +1,6 @@
 /* Main header file for the bfd library -- portable access to object files.
 
-   Copyright (C) 1990-2016 Free Software Foundation, Inc.
+   Copyright (C) 1990-2019 Free Software Foundation, Inc.
 
    Contributed by Cygnus Support.
 
@@ -34,6 +34,9 @@ extern "C" {
 
 #include "ansidecl.h"
 #include "symcat.h"
+#include "bfd_stdint.h"
+#include "diagnostics.h"
+#include <stdarg.h>
 #include <sys/stat.h>
 
 #if defined (__STDC__) || defined (ALMOST_STDC) || defined (HAVE_STRINGIZE)
@@ -90,6 +93,24 @@ typedef BFD_HOST_64_BIT bfd_int64_t;
 typedef BFD_HOST_U_64_BIT bfd_uint64_t;
 #endif
 
+#ifdef HAVE_INTTYPES_H
+# include <inttypes.h>
+#else
+# if BFD_HOST_64BIT_LONG
+#  define BFD_PRI64 "l"
+# elif defined (__MSVCRT__)
+#  define BFD_PRI64 "I64"
+# else
+#  define BFD_PRI64 "ll"
+# endif
+# undef PRId64
+# define PRId64 BFD_PRI64 "d"
+# undef PRIu64
+# define PRIu64 BFD_PRI64 "u"
+# undef PRIx64
+# define PRIx64 BFD_PRI64 "x"
+#endif
+
 #if BFD_ARCH_SIZE >= 64
 #define BFD64
 #endif
@@ -103,7 +124,7 @@ typedef BFD_HOST_U_64_BIT bfd_uint64_t;
 #endif
 
 /* Declaring a type wide enough to hold a host long and a host pointer.  */
-#define BFD_HOSTPTR_T	@BFD_HOSTPTR_T@
+#define BFD_HOSTPTR_T @BFD_HOSTPTR_T@
 typedef BFD_HOSTPTR_T bfd_hostptr_t;
 
 /* Forward declaration.  */
@@ -214,9 +235,6 @@ bfd_format;
 /* A count of carsyms (canonical archive symbols).  */
 typedef unsigned long symindex;
 
-/* How to perform a relocation.  */
-typedef const struct reloc_howto_struct reloc_howto_type;
-
 #define BFD_NO_MORE_SYMBOLS ((symindex) ~0)
 
 /* General purpose part of a symbol X;
@@ -246,7 +264,7 @@ carsym;			/* To make these you call a carsymogen.  */
 
 /* Used in generating armaps (archive tables of contents).
    Perhaps just a forward definition would do?  */
-struct orl 			/* Output ranlib.  */
+struct orl		/* Output ranlib.  */
 {
   char **name;		/* Symbol name.  */
   union
@@ -256,7 +274,7 @@ struct orl 			/* Output ranlib.  */
   } u;			/* bfd* or file position.  */
   int namidx;		/* Index into string table.  */
 };
-
+
 /* Linenumber stuff.  */
 typedef struct lineno_cache_entry
 {
@@ -264,17 +282,25 @@ typedef struct lineno_cache_entry
   union
   {
     struct bfd_symbol *sym;	/* Function name.  */
-    bfd_vma offset;	    		/* Offset into section.  */
+    bfd_vma offset;		/* Offset into section.  */
   } u;
 }
 alent;
 
 /* Object and core file sections.  */
+typedef struct bfd_section *sec_ptr;
 
 #define	align_power(addr, align)	\
   (((addr) + ((bfd_vma) 1 << (align)) - 1) & (-((bfd_vma) 1 << (align))))
 
-typedef struct bfd_section *sec_ptr;
+/* Align an address upward to a boundary, expressed as a number of bytes.
+   E.g. align to an 8-byte boundary with argument of 8.  Take care never
+   to wrap around if the address is within boundary-1 of the end of the
+   address space.  */
+#define BFD_ALIGN(this, boundary)					  \
+  ((((bfd_vma) (this) + (boundary) - 1) >= (bfd_vma) (this))		  \
+   ? (((bfd_vma) (this) + ((boundary) - 1)) & ~ (bfd_vma) ((boundary)-1)) \
+   : ~ (bfd_vma) 0)
 
 #define bfd_get_section_name(bfd, ptr) ((void) bfd, (ptr)->name)
 #define bfd_get_section_vma(bfd, ptr) ((void) bfd, (ptr)->vma)
@@ -320,11 +346,11 @@ typedef struct _symbol_info
 {
   symvalue value;
   char type;
-  const char *name;            /* Symbol name.  */
-  unsigned char stab_type;     /* Stab type.  */
-  char stab_other;             /* Stab other.  */
-  short stab_desc;             /* Stab desc.  */
-  const char *stab_name;       /* String for stab type.  */
+  const char *name;		/* Symbol name.  */
+  unsigned char stab_type;	/* Stab type.  */
+  char stab_other;		/* Stab other.  */
+  short stab_desc;		/* Stab desc.  */
+  const char *stab_name;	/* String for stab type.  */
 } symbol_info;
 
 /* Get the name of a stabs type code.  */
@@ -362,7 +388,7 @@ struct bfd_hash_table
      only if the argument is NULL.  */
   struct bfd_hash_entry *(*newfunc)
     (struct bfd_hash_entry *, struct bfd_hash_table *, const char *);
-   /* An objalloc for this hash table.  This is a struct objalloc *,
+  /* An objalloc for this hash table.  This is a struct objalloc *,
      but we use void * to avoid requiring the inclusion of objalloc.h.  */
   void *memory;
   /* The number of slots in the hash table.  */
@@ -477,24 +503,22 @@ extern int bfd_stat (bfd *, struct stat *);
 /* Deprecated old routines.  */
 #if __GNUC__
 #define bfd_read(BUF, ELTSIZE, NITEMS, ABFD)				\
-  (warn_deprecated ("bfd_read", __FILE__, __LINE__, __FUNCTION__),	\
+  (_bfd_warn_deprecated ("bfd_read", __FILE__, __LINE__, __FUNCTION__),	\
    bfd_bread ((BUF), (ELTSIZE) * (NITEMS), (ABFD)))
 #define bfd_write(BUF, ELTSIZE, NITEMS, ABFD)				\
-  (warn_deprecated ("bfd_write", __FILE__, __LINE__, __FUNCTION__),	\
+  (_bfd_warn_deprecated ("bfd_write", __FILE__, __LINE__, __FUNCTION__), \
    bfd_bwrite ((BUF), (ELTSIZE) * (NITEMS), (ABFD)))
 #else
 #define bfd_read(BUF, ELTSIZE, NITEMS, ABFD)				\
-  (warn_deprecated ("bfd_read", (const char *) 0, 0, (const char *) 0), \
+  (_bfd_warn_deprecated ("bfd_read", (const char *) 0, 0, (const char *) 0), \
    bfd_bread ((BUF), (ELTSIZE) * (NITEMS), (ABFD)))
 #define bfd_write(BUF, ELTSIZE, NITEMS, ABFD)				\
-  (warn_deprecated ("bfd_write", (const char *) 0, 0, (const char *) 0),\
+  (_bfd_warn_deprecated ("bfd_write", (const char *) 0, 0, (const char *) 0),\
    bfd_bwrite ((BUF), (ELTSIZE) * (NITEMS), (ABFD)))
 #endif
-extern void warn_deprecated (const char *, const char *, int, const char *);
+extern void _bfd_warn_deprecated (const char *, const char *, int, const char *);
 
-/* Cast from const char * to char * so that caller can assign to
-   a char * without a warning.  */
-#define bfd_get_filename(abfd) ((char *) (abfd)->filename)
+#define bfd_get_filename(abfd) ((abfd)->filename)
 #define bfd_get_cacheable(abfd) ((abfd)->cacheable)
 #define bfd_get_format(abfd) ((abfd)->format)
 #define bfd_get_target(abfd) ((abfd)->xvec->name)
@@ -554,6 +578,8 @@ void bfd_putb64 (bfd_uint64_t, void *);
 void bfd_putl64 (bfd_uint64_t, void *);
 void bfd_putb32 (bfd_vma, void *);
 void bfd_putl32 (bfd_vma, void *);
+void bfd_putb24 (bfd_vma, void *);
+void bfd_putl24 (bfd_vma, void *);
 void bfd_putb16 (bfd_vma, void *);
 void bfd_putl16 (bfd_vma, void *);
 
@@ -581,8 +607,6 @@ extern bfd_boolean _bfd_handle_already_linked
 
 /* Externally visible ECOFF routines.  */
 
-extern bfd_vma bfd_ecoff_get_gp_value
-  (bfd * abfd);
 extern bfd_boolean bfd_ecoff_set_gp_value
   (bfd *abfd, bfd_vma gp_value);
 extern bfd_boolean bfd_ecoff_set_regmasks
@@ -751,8 +775,6 @@ extern bfd_boolean bfd_sunos_size_dynamic_sections
 
 extern bfd_boolean bfd_i386linux_size_dynamic_sections
   (bfd *, struct bfd_link_info *);
-extern bfd_boolean bfd_m68klinux_size_dynamic_sections
-  (bfd *, struct bfd_link_info *);
 extern bfd_boolean bfd_sparclinux_size_dynamic_sections
   (bfd *, struct bfd_link_info *);
 
@@ -820,9 +842,6 @@ union internal_auxent;
 
 extern bfd_boolean bfd_coff_set_symbol_class
   (bfd *, struct bfd_symbol *, unsigned int);
-
-extern bfd_boolean bfd_m68k_coff_create_embedded_relocs
-  (bfd *, struct bfd_link_info *, struct bfd_section *, struct bfd_section *, char **);
 
 /* ARM VFP11 erratum workaround support.  */
 typedef enum
@@ -892,9 +911,27 @@ extern bfd_boolean bfd_elf32_arm_allocate_interworking_sections
 extern bfd_boolean bfd_elf32_arm_process_before_allocation
   (bfd *, struct bfd_link_info *);
 
-void bfd_elf32_arm_set_target_relocs
-  (bfd *, struct bfd_link_info *, int, char *, int, int, bfd_arm_vfp11_fix,
-   bfd_arm_stm32l4xx_fix, int, int, int, int, int);
+struct elf32_arm_params {
+  char *thumb_entry_symbol;
+  int byteswap_code;
+  int target1_is_rel;
+  char * target2_type;
+  int fix_v4bx;
+  int use_blx;
+  bfd_arm_vfp11_fix vfp11_denorm_fix;
+  bfd_arm_stm32l4xx_fix stm32l4xx_fix;
+  int no_enum_size_warning;
+  int no_wchar_size_warning;
+  int pic_veneer;
+  int fix_cortex_a8;
+  int fix_arm1176;
+  int merge_exidx_entries;
+  int cmse_implib;
+  bfd *in_implib_bfd;
+};
+
+void bfd_elf32_arm_set_target_params
+  (bfd *, struct bfd_link_info *, struct elf32_arm_params *);
 
 extern bfd_boolean bfd_elf32_arm_get_bfd_for_interworking
   (bfd *, struct bfd_link_info *);
@@ -908,7 +945,7 @@ extern void bfd_elf32_arm_keep_private_stub_output_sections
 /* ELF ARM mapping symbol support.  */
 #define BFD_ARM_SPECIAL_SYM_TYPE_MAP	(1 << 0)
 #define BFD_ARM_SPECIAL_SYM_TYPE_TAG	(1 << 1)
-#define BFD_ARM_SPECIAL_SYM_TYPE_OTHER  (1 << 2)
+#define BFD_ARM_SPECIAL_SYM_TYPE_OTHER	(1 << 2)
 #define BFD_ARM_SPECIAL_SYM_TYPE_ANY	(~0)
 
 extern bfd_boolean bfd_is_arm_special_symbol_name
@@ -956,11 +993,54 @@ extern void bfd_elf64_aarch64_init_maps
 extern void bfd_elf32_aarch64_init_maps
   (bfd *);
 
+/* Types of PLTs based on the level of security.  This would be a
+   bit-mask to denote which of the combinations of security features
+   are enabled:
+   - No security feature PLTs
+   - PLTs with BTI instruction
+   - PLTs with PAC instruction
+*/
+typedef enum
+{
+  PLT_NORMAL	= 0x0,  /* Normal plts.  */
+  PLT_BTI	= 0x1,  /* plts with bti.  */
+  PLT_PAC	= 0x2,  /* plts with pointer authentication.  */
+  PLT_BTI_PAC	= PLT_BTI | PLT_PAC
+} aarch64_plt_type;
+
+/* To indicate if BTI is enabled with/without warning.  */
+typedef enum
+{
+  BTI_NONE	= 0,  /* BTI is not enabled.  */
+  BTI_WARN	= 1,  /* BTI is enabled with -z force-bti.  */
+} aarch64_enable_bti_type;
+
+/* A structure to encompass all information coming from BTI or PAC
+   related command line options.  This involves the "PLT_TYPE" to determine
+   which version of PLTs to pick and "BTI_TYPE" to determine if
+   BTI should be turned on with any warnings.   */
+typedef struct
+{
+  aarch64_plt_type plt_type;
+  aarch64_enable_bti_type bti_type;
+} aarch64_bti_pac_info;
+
+/* An enum to define what kind of erratum fixes we should apply.  This gives the
+   user a bit more control over the sequences we generate.  */
+typedef enum
+{
+  ERRAT_NONE  = (1 << 0),  /* No erratum workarounds allowed.  */
+  ERRAT_ADR   = (1 << 1),  /* Erratum workarounds using ADR allowed.  */
+  ERRAT_ADRP  = (1 << 2),  /* Erratum workarounds using ADRP are allowed.  */
+} erratum_84319_opts;
+
 extern void bfd_elf64_aarch64_set_options
-  (bfd *, struct bfd_link_info *, int, int, int, int, int, int);
+  (bfd *, struct bfd_link_info *, int, int, int, int, erratum_84319_opts, int,
+   aarch64_bti_pac_info);
 
 extern void bfd_elf32_aarch64_set_options
-  (bfd *, struct bfd_link_info *, int, int, int, int, int, int);
+  (bfd *, struct bfd_link_info *, int, int, int, int, erratum_84319_opts, int,
+   aarch64_bti_pac_info);
 
 /* ELF AArch64 mapping symbol support.  */
 #define BFD_AARCH64_SPECIAL_SYM_TYPE_MAP	(1 << 0)
@@ -1018,3 +1098,19 @@ extern bfd_boolean v850_elf_create_sections
 
 extern bfd_boolean v850_elf_set_note
   (bfd *, unsigned int, unsigned int);
+
+/* MIPS ABI flags data access.  For the disassembler.  */
+struct elf_internal_abiflags_v0;
+extern struct elf_internal_abiflags_v0 *bfd_mips_elf_get_abiflags (bfd *);
+
+/* C-SKY functions.  */
+extern bfd_boolean elf32_csky_build_stubs
+  (struct bfd_link_info *);
+extern bfd_boolean elf32_csky_size_stubs
+  (bfd *, bfd *, struct bfd_link_info *, bfd_signed_vma,
+   struct bfd_section *(*) (const char*, struct bfd_section*),
+   void (*) (void));
+extern void elf32_csky_next_input_section
+  (struct bfd_link_info *, struct bfd_section *);
+extern int elf32_csky_setup_section_lists
+  (bfd *, struct bfd_link_info *);

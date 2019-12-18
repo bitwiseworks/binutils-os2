@@ -1,5 +1,5 @@
 # This shell script emits a C file. -*- C -*-
-#   Copyright (C) 2001-2016 Free Software Foundation, Inc.
+#   Copyright (C) 2001-2019 Free Software Foundation, Inc.
 #
 # This file is part of the GNU Binutils.
 #
@@ -166,7 +166,7 @@ mmo_place_orphan (asection *s,
 
 	  /* We have to find the oss before this one, so we can use that as
 	     "after".  */
-	  for (lookup = &lang_output_section_statement.head->output_section_statement;
+	  for (lookup = &lang_os_list.head->output_section_statement;
 	       lookup != NULL && lookup->next != before;
 	       lookup = lookup->next)
 	    ;
@@ -228,7 +228,7 @@ mmo_after_open (void)
 	{
 	  if (bfd_get_flavour (is->the_bfd) == bfd_target_elf_flavour
 	      && !_bfd_mmix_check_all_relocs (is->the_bfd, &link_info))
-	    einfo ("%X%P: Internal problems scanning %B after opening it",
+	    einfo (_("%X%P: internal problems scanning %pB after opening it"),
 		   is->the_bfd);
 	}
     }
