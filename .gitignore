@@ -55,6 +55,9 @@ libiberty/configure
 /ltsugar.m4
 /ltversion.m4
 /lt~obsolete.m4
+libctf/configure
+libctf/Makefile.in
+libctf/aclocal.m4
 /missing
 /mkinstalldirs
 opcodes/Makefile.in
