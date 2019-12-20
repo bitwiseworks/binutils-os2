@@ -11093,8 +11093,8 @@ const char *md_shortopts = "qnO::";
 #define OPTION_X86_USED_NOTE (OPTION_MD_BASE + 25)
 #define OPTION_MVEXWIG (OPTION_MD_BASE + 26)
 #ifdef EMX
-#define OPTION_ZOMF (OPTION_MD_BASE + 26)
-#define OPTION_ZSTRIP (OPTION_MD_BASE + 27)
+#define OPTION_ZOMF (OPTION_MD_BASE + 27)
+#define OPTION_ZSTRIP (OPTION_MD_BASE + 28)
 #endif
 
 struct option md_longopts[] =
