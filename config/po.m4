@@ -103,7 +103,7 @@ AC_DEFUN([AM_PO_SUBDIRS],
         test -n "$ac_given_srcdir" || ac_given_srcdir="$srcdir"
         case "$ac_given_srcdir" in
           .)  top_srcdir=`echo $ac_dots|sed 's%/$%%'` ;;
-          /*) top_srcdir="$ac_given_srcdir" ;;
+          /*|?:/*) top_srcdir="$ac_given_srcdir" ;;
           *)  top_srcdir="$ac_dots$ac_given_srcdir" ;;
         esac
         if test -f "$ac_given_srcdir/$ac_dir/POTFILES.in"; then
