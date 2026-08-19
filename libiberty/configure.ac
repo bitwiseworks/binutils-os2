@@ -259,7 +259,7 @@ else
 fi
 
 frag=xhost-mkfrag
-${CONFIG_SHELL-/bin/sh} ${libiberty_topdir}/move-if-change temp-frag xhost-mkfrag
+${CONFIG_SHELL-${UNIXROOT:+/@unixroot/usr}/bin/sh} ${libiberty_topdir}/move-if-change temp-frag xhost-mkfrag
 
 host_makefile_frag=${frag}
 AC_SUBST_FILE(host_makefile_frag)
@@ -745,7 +745,7 @@ target=${target}
 with_target_subdir=${with_target_subdir}
 with_multisubdir=${with_multisubdir}
 ac_configure_args="--enable-multilib ${ac_configure_args}"
-CONFIG_SHELL=${CONFIG_SHELL-/bin/sh}
+CONFIG_SHELL=${CONFIG_SHELL-${UNIXROOT:+/@unixroot/usr}/bin/sh}
 ORIGINAL_LD_FOR_MULTILIBS="${ORIGINAL_LD_FOR_MULTILIBS}"
 libiberty_topdir=${libiberty_topdir}
 ]])

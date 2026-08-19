@@ -574,7 +574,7 @@ AC_DEFUN([ACX_CHECK_PROG_VER],[
     gcc_cv_prog_$2_modern=no
   fi
   if test $gcc_cv_prog_$2_modern = no; then
-    $1="${CONFIG_SHELL-/bin/sh} $ac_aux_dir/missing $2"
+    $1="${CONFIG_SHELL-${UNIXROOT:+/@unixroot/usr}/bin/sh} $ac_aux_dir/missing $2"
   fi
 ])
 

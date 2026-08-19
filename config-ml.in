@@ -100,7 +100,7 @@
 # configured for a particular host.
 
 Makefile=${ac_file-Makefile}
-ml_config_shell=${CONFIG_SHELL-/bin/sh}
+ml_config_shell=${CONFIG_SHELL-${UNIXROOT:+/@unixroot/usr}/bin/sh}
 ml_realsrcdir=${srcdir}
 
 # Scan all the arguments and set all the ones we need.
